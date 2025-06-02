@@ -1,0 +1,18 @@
+/*
+
+!src/
+!tests/
+!docs/
+!examples/
+!.github/
+
+!.gitignore
+!README.md
+!LICENSE
+!pyproject.toml
+!uv.lock
+!.pre-commit-config.yaml
+
+
+# recursively re-ignore
+__pycache__
