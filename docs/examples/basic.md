@@ -8,7 +8,7 @@ Let's create a 5-node cycle graph and add some basic styling through node attrib
 
 <div class="interactive-graph-wrapper" style="margin-bottom: 1.5em; padding: 1em; border: 1px solid #e0e0e0; border-radius: 4px; background-color: #f9f9f9;">
     <h4 style="margin-top: 0; margin-bottom: 0.5em; font-size: 1.1em;">Interactive 5-Cycle Graph</h4>
-    <iframe src="/nx-vis-visualizer/assets/generated_graphs/cycle_graph_example.html"
+    <iframe src="/assets/generated_graphs/cycle_graph_example.html"
             width="100%"
             height="450px"
             style="border: 1px solid #ccc; max-width: 100%; display: block;"
@@ -57,7 +57,7 @@ The `vis_options` used (as a Python dictionary in the generation script):
 
 <div class="interactive-graph-wrapper" style="margin-bottom: 1.5em; padding: 1em; border: 1px solid #e0e0e0; border-radius: 4px; background-color: #f9f9f9;">
     <h4 style="margin-top: 0; margin-bottom: 0.5em; font-size: 1.1em;">Zachary's Karate Club</h4>
-    <iframe src="/nx-vis-visualizer/assets/generated_graphs/karate_club_example.html"
+    <iframe src="/assets/generated_graphs/karate_club_example.html"
             width="100%"
             height="550px"
             style="border: 1px solid #ccc; max-width: 100%; display: block;"

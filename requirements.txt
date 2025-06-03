@@ -1,0 +1,4 @@
+# requirements.txt
+mkdocs>=1.5
+mkdocs-material>=9.0
+networkx>=3.0

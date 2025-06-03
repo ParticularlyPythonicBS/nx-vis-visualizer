@@ -8,7 +8,7 @@ This example shows a basic directed graph where edge directions are indicated by
 
 <div class="interactive-graph-wrapper" style="margin-bottom: 1.5em; padding: 1em; border: 1px solid #e0e0e0; border-radius: 4px; background-color: #f9f9f9;">
     <h4 style="margin-top: 0; margin-bottom: 0.5em; font-size: 1.1em;">Simple Directed Graph</h4>
-    <iframe src="/nx-vis-visualizer/assets/generated_graphs/simple_directed_example.html"
+    <iframe src="/assets/generated_graphs/simple_directed_example.html"
             width="100%"
             height="500px"
             style="border: 1px solid #ccc; max-width: 100%; display: block;"
@@ -71,7 +71,7 @@ This example demonstrates a directed graph representing course prerequisites, us
 
 <div class="interactive-graph-wrapper" style="margin-bottom: 1.5em; padding: 1em; border: 1px solid #e0e0e0; border-radius: 4px; background-color: #f9f9f9;">
     <h4 style="margin-top: 0; margin-bottom: 0.5em; font-size: 1.1em;">Course Prerequisites</h4>
-    <iframe src="/nx-vis-visualizer/assets/generated_graphs/course_prerequisites_example.html"
+    <iframe src="/assets/generated_graphs/course_prerequisites_example.html"
             width="100%"
             height="600px"
             style="border: 1px solid #ccc; max-width: 100%; display: block;"

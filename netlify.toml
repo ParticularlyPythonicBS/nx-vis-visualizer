@@ -1,0 +1,12 @@
+# netlify.toml
+
+[build]
+  publish = "site"
+  # The command Netlify will run.
+  # Netlify's build image should handle activating the specified PYTHON_VERSION
+  # and making 'python' and 'pip' available on the PATH from that version.
+  command = "pip install -r requirements.txt && pip install . && python generate_graph_examples.py && mkdocs build"
+
+  [build.environment]
+    PYTHON_VERSION = "3.12" # Be explicit. You can try "3.12.10" if "3.12" is ambiguous
+                            # or another version like "3.11" if 3.12 is problematic on Netlify.
