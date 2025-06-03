@@ -1,14 +1,148 @@
-
-[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ParticularlyPythonicBS/nx-vis-visualizer/master.svg)](https://results.pre-commit.ci/latest/github/ParticularlyPythonicBS/nx-vis-visualizer/master)
-
 # NX-VIS Visualizer
 
-A Python library to render NetworkX graphs interactively in HTML using vis.js.
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![pre-commit.ci](https://results.pre-commit.ci/badge/github/ParticularlyPythonicBS/nx-vis-visualizer/master.svg)](https://results.pre-commit.ci/latest/github/ParticularlyPythonicBS/nx-vis-visualizer/master)
+[![CI & Deploy](https://github.com/ParticularlyPythonicBS/nx-vis-visualizer/actions/workflows/ci.yml/badge.svg)](https://github.com/ParticularlyPythonicBS/nx-vis-visualizer/actions/workflows/ci.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6c56b010-ff27-4087-af9a-07e69af5e1f4/deploy-status)](https://app.netlify.com/sites/nx-vis-visualizer/deploys)
+[![PyPI version](https://badge.fury.io/py/nx-vis-visualizer.svg)](https://badge.fury.io/py/nx-vis-visualizer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+**NX-VIS Visualizer** is a Python library designed to bridge the gap between [NetworkX](https://networkx.org/), a powerful graph manipulation library, and [vis.js Network](https://visjs.github.io/vis-network/docs/network/), a dynamic, browser-based visualization library. It allows you to easily render your NetworkX graphs as interactive HTML files or embed them directly into Jupyter Notebooks.
 
--   Convert NetworkX graphs (Graph and DiGraph) to vis.js format.
--   Customize vis.js options.
--   Generate self-contained HTML files.
--   Optionally open in browser or return HTML for Jupyter notebooks.
+**[View the Documentation & Live Examples](https://nx-vis-visualizer.netlify.app/)**
+
+## Key Features
+
+* **Seamless Conversion:** Effortlessly convert NetworkX `Graph` and `DiGraph` objects into a format compatible with vis.js.
+* **Rich Customization:** Leverage the extensive [vis.js Network options](https://visjs.github.io/vis-network/docs/network/options.html) to tailor the appearance and behavior of your graphs (nodes, edges, layout, physics, interaction, etc.).
+* **Node & Edge Styling:** Apply vis.js styling attributes directly to your NetworkX nodes and edges.
+* **Self-Contained HTML:** Generate standalone HTML files that can be easily shared or embedded.
+* **Jupyter Notebook Integration:** Display interactive graphs directly within your Jupyter Notebooks or IPython environments.
+* **Interactive Exploration:** Enables panning, zooming, node dragging (if physics allows), and information display on hover/click.
+* **Configurable UI:** Optionally include a vis.js configuration panel within the generated HTML to tweak graph settings live in the browser.
+
+## Installation
+
+You can install NX-VIS Visualizer using pip:
+
+```bash
+pip install nx-vis-visualizer
+```
+
+Alternatively, for development or to install from source:
+
+```bash
+git clone https://github.com/ParticularlyPythonicBS/nx-vis-visualizer.git
+cd nx-vis-visualizer
+uv pip install -e .
+```
+
+## Quick Start
+
+Here's a basic example of how to visualize a simple NetworkX graph:
+
+```python
+import networkx as nx
+from nx_vis_visualizer import nx_to_vis
+
+# 1. Create a NetworkX graph
+G = nx.cycle_graph(5)
+
+# Add some basic attributes for visualization
+for i, node_id in enumerate(G.nodes()):
+    G.nodes[node_id]['label'] = f'Node {i+1}'
+    G.nodes[node_id]['title'] = f'This is Node {i+1}' # Tooltip
+    G.nodes[node_id]['group'] = i % 2
+
+G.edges[0,1]['label'] = 'Link 0-1'
+G.edges[0,1]['color'] = 'red'
+
+# 2. Define (optional) vis.js options
+custom_options = {
+    "nodes": {"font": {"size": 16}},
+    "edges": {"smooth": {"enabled": True}},
+    "groups": {
+        0: {"color": "skyblue", "shape": "dot"},
+        1: {"color": "lightgreen", "shape": "square"}
+    },
+    "interaction": {"navigationButtons": True, "hover": True},
+    "physics": {"enabled": True}
+}
+
+# 3. Generate and show the interactive HTML graph
+# This will create 'cycle_graph.html' and open it in your browser.
+nx_to_vis(
+    G,
+    output_filename="cycle_graph.html",
+    html_title="My Interactive Cycle Graph",
+    vis_options=custom_options,
+    show_browser=True
+)
+
+# To get HTML for a Jupyter Notebook:
+# html_output = nx_to_vis(G, vis_options=custom_options, notebook=True, show_browser=False)
+# if html_output:
+#     from IPython.display import HTML
+#     display(HTML(html_output))
+```
+
+For more detailed examples, including directed graphs and advanced customizations, please see the [**Documentation**](https://nx-vis-visualizer.netlify.app/examples/basic/).
+
+## Documentation
+
+Full documentation, including API references and more examples, is available at:
+**[https://nx-vis-visualizer.netlify.app/](https://nx-vis-visualizer.netlify.app/)**
+
+The documentation covers:
+
+* Installation
+* Basic Usage
+* Styling Nodes and Edges
+* Using vis.js Options
+* Directed Graphs
+* Advanced Customization
+* Jupyter Notebook Integration
+* API Reference
+
+## Contributing
+
+Contributions are welcome! Whether it's bug reports, feature requests, documentation improvements, or code contributions, please feel free to open an issue or submit a pull request.
+
+To set up for development:
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/ParticularlyPythonicBS/nx-vis-visualizer.git
+    cd nx-vis-visualizer
+    ```
+
+2. Install dependencies using [uv](https://github.com/astral-sh/uv):
+
+    ```bash
+    uv sync --all-extras --dev
+    uv pip install -e . --no-deps
+    ```
+
+3. Set up [pre-commit](https://pre-commit.com/) hooks for code formatting and linting:
+
+    ```bash
+    uv run pre-commit install
+    ```
+
+4. Run tests:
+
+    ```bash
+    uv run pytest tests
+    ```
+
+Please ensure your contributions pass all tests and adhere to the coding style (enforced by pre-commit hooks).
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+* [NetworkX](https://networkx.org/) development team.
+* [vis.js Network](https://visjs.github.io/vis-network/docs/network/) library and its contributors.
