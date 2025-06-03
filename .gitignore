@@ -14,7 +14,7 @@
 !.pre-commit-config.yaml
 !mkdocs.yml
 !generate_graph_examples.py
-
+!.python-version
 
 # recursively re-ignore
 __pycache__
