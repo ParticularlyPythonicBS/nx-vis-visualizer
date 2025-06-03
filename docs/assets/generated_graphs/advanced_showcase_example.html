@@ -62,7 +62,7 @@
             transform: rotate(-90deg); /* Right arrow for collapsed state */
         }
 
-        #config-container-content-fc8d7387 {
+        #config-container-content-e05ec516 {
             max-height: 40vh; /* Default expanded max height */
             overflow-y: auto;
             padding: 15px;
@@ -71,7 +71,7 @@
             transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
         }
 
-        .collapsed #config-container-content-fc8d7387 {
+        .collapsed #config-container-content-e05ec516 {
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
@@ -79,7 +79,7 @@
             border-bottom: none; /* Hide border when collapsed */
         }
 
-        #mynetwork-fc8d7387 {
+        #mynetwork-e05ec516 {
             width: 100%;
             flex-grow: 1; /* Graph takes remaining vertical space */
             min-height: 0; /* Important for flex children to shrink */
@@ -119,28 +119,28 @@
     </style>
 </head>
 <body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-fc8d7387">
-        <div class="config-panel-header" id="config-panel-header-fc8d7387" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-fc8d7387">
+    <div class="config-panel-wrapper" id="config-panel-wrapper-e05ec516">
+        <div class="config-panel-header" id="config-panel-header-e05ec516" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-e05ec516">
             <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-fc8d7387" aria-label="Toggle configuration panel"></button>
+            <button class="config-toggle-btn" id="config-toggle-btn-e05ec516" aria-label="Toggle configuration panel"></button>
         </div>
-        <div id="config-container-content-fc8d7387">
+        <div id="config-container-content-e05ec516">
             <!-- Vis.js configuration UI will be injected here -->
         </div>
     </div>
 
-    <div id="mynetwork-fc8d7387"></div>
+    <div id="mynetwork-e05ec516"></div>
 
     <script type="text/javascript">
         (function() {
             var nodesArray = [{"id": "R0", "label": "R0", "group": 0, "value": 1, "title": "Random Node R0\nGroup: 0\nValue: 1", "font": {"color": "black", "size": 10}}, {"id": "R1", "label": "R1", "group": 1, "value": 2, "title": "Random Node R1\nGroup: 1\nValue: 2", "font": {}}, {"id": "R2", "label": "R2", "group": 2, "value": 3, "title": "Random Node R2\nGroup: 2\nValue: 3", "font": {}}, {"id": "R3", "label": "R3", "group": 3, "value": 4, "title": "Random Node R3\nGroup: 3\nValue: 4", "font": {}}, {"id": "R4", "label": "R4", "group": 0, "value": 5, "title": "Random Node R4\nGroup: 0\nValue: 5", "font": {"color": "black", "size": 10}}, {"id": "R5", "label": "R5", "group": 1, "value": 1, "title": "Random Node R5\nGroup: 1\nValue: 1", "font": {}}, {"id": "R6", "label": "R6", "group": 2, "value": 2, "title": "Random Node R6\nGroup: 2\nValue: 2", "font": {}}, {"id": "R7", "label": "R7", "group": 3, "value": 3, "title": "Random Node R7\nGroup: 3\nValue: 3", "font": {}}, {"id": "R8", "label": "R8", "group": 0, "value": 4, "title": "Random Node R8\nGroup: 0\nValue: 4", "font": {"color": "black", "size": 10}}, {"id": "R9", "label": "R9", "group": 1, "value": 5, "title": "Random Node R9\nGroup: 1\nValue: 5", "font": {}}, {"id": "R10", "label": "R10", "group": 2, "value": 1, "title": "Random Node R10\nGroup: 2\nValue: 1", "font": {}}, {"id": "R11", "label": "R11", "group": 3, "value": 2, "title": "Random Node R11\nGroup: 3\nValue: 2", "font": {}}, {"id": "R12", "label": "R12", "group": 0, "value": 3, "title": "Random Node R12\nGroup: 0\nValue: 3", "font": {"color": "black", "size": 10}}, {"id": "R13", "label": "R13", "group": 1, "value": 4, "title": "Random Node R13\nGroup: 1\nValue: 4", "font": {}}, {"id": "R14", "label": "R14", "group": 2, "value": 5, "title": "Random Node R14\nGroup: 2\nValue: 5", "font": {}}, {"id": "R15", "label": "R15", "group": 3, "value": 1, "title": "Random Node R15\nGroup: 3\nValue: 1", "font": {}}, {"id": "R16", "label": "R16", "group": 0, "value": 2, "title": "Random Node R16\nGroup: 0\nValue: 2", "font": {"color": "black", "size": 10}}, {"id": "R17", "label": "R17", "group": 1, "value": 3, "title": "Random Node R17\nGroup: 1\nValue: 3", "font": {}}, {"id": "R18", "label": "R18", "group": 2, "value": 4, "title": "Random Node R18\nGroup: 2\nValue: 4", "font": {}}, {"id": "R19", "label": "R19", "group": 3, "value": 5, "title": "Random Node R19\nGroup: 3\nValue: 5", "font": {}}, {"id": "Source", "label": "START", "shape": "diamond", "color": {"background": "lightgreen", "border": "darkgreen", "highlight": {"background": "green", "border": "darkgreen"}}, "size": 30, "group": 4, "title": "This is the main Source node", "font": {"size": 16, "color": "darkgreen", "face": "Arial", "strokeWidth": 1, "strokeColor": "white"}, "fixed": {"x": true, "y": true}, "x": -400, "y": -200}, {"id": "Sink", "label": "END", "shape": "star", "color": "gold", "size": 30, "group": 4, "title": "This is the main Sink node", "font": {"size": 16, "color": "black", "face": "Georgia"}, "fixed": {"x": true, "y": true}, "x": 400, "y": 200}, {"id": "Hub", "label": "Central Hub", "shape": "ellipse", "color": "lightblue", "size": 25, "group": 5, "title": "A central connecting hub", "font": {"multi": "html", "bold": "18px arial darkblue"}}, {"id": "Isolated", "label": "I'm Alone", "shape": "text", "title": "An isolated node example", "color": "#FFCCFF", "font": {"size": 12, "color": "purple"}}];
-            var edgesArray = [{"from": "R0", "to": "Source", "weight": 1, "color": "darkgreen", "label": "S->R0"}, {"from": "R0", "to": "R5", "color": {"color": "red", "highlight": "darkred", "hover": "pink", "opacity": 0.7}, "label": "Opacity Edge", "weight": 2}, {"from": "R1", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R1 to Hub"}, {"from": "R1", "to": "R2", "weight": 1, "color": "#cccccc", "title": "R1-R2"}, {"from": "R3", "to": "Sink", "weight": 3, "color": "orange", "label": "R3->E", "arrows": "to"}, {"from": "R4", "to": "R5", "weight": 1, "color": "#cccccc", "title": "R4-R5"}, {"from": "R5", "to": "Source", "weight": 3, "color": "darkgreen", "label": "S->R5"}, {"from": "R5", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R5 to Hub"}, {"from": "R7", "to": "Sink", "weight": 3, "color": "orange", "label": "R7->E", "arrows": "to"}, {"from": "R9", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R9 to Hub"}, {"from": "R10", "to": "Source", "weight": 2, "color": "darkgreen", "label": "S->R10"}, {"from": "R11", "to": "Sink", "weight": 3, "color": "orange", "label": "R11->E", "arrows": "to"}, {"from": "R13", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R13 to Hub"}, {"from": "R15", "to": "Source", "weight": 1, "color": "darkgreen", "label": "S->R15"}, {"from": "R15", "to": "Sink", "weight": 3, "color": "orange", "label": "R15->E", "arrows": "to"}, {"from": "R17", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R17 to Hub"}, {"from": "R19", "to": "Sink", "weight": 3, "color": "orange", "label": "R19->E", "arrows": "to"}, {"from": "Source", "to": "Hub", "weight": 5, "color": "darkgreen", "width": 4, "title": "Main link to Hub"}, {"from": "Sink", "to": "Hub", "weight": 5, "color": "blue", "width": 4, "title": "Main link from Hub to Sink", "arrows": "to", "smooth": {"type": "curvedCW", "roundness": 0.2}}];
+            var edgesArray = [{"from": "R0", "to": "Source", "weight": 1, "color": "darkgreen", "label": "S->R0"}, {"from": "R0", "to": "R1", "weight": 1, "color": "#cccccc", "title": "R0-R1"}, {"from": "R0", "to": "R5", "color": {"color": "red", "highlight": "darkred", "hover": "pink", "opacity": 0.7}, "label": "Opacity Edge", "weight": 2}, {"from": "R1", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R1 to Hub"}, {"from": "R3", "to": "Sink", "weight": 3, "color": "orange", "label": "R3->E", "arrows": "to"}, {"from": "R3", "to": "R4", "weight": 1, "color": "#cccccc", "title": "R3-R4"}, {"from": "R5", "to": "Source", "weight": 3, "color": "darkgreen", "label": "S->R5"}, {"from": "R5", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R5 to Hub"}, {"from": "R7", "to": "Sink", "weight": 3, "color": "orange", "label": "R7->E", "arrows": "to"}, {"from": "R7", "to": "R8", "weight": 1, "color": "#cccccc", "title": "R7-R8"}, {"from": "R9", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R9 to Hub"}, {"from": "R9", "to": "R10", "weight": 1, "color": "#cccccc", "title": "R9-R10"}, {"from": "R10", "to": "Source", "weight": 2, "color": "darkgreen", "label": "S->R10"}, {"from": "R11", "to": "Sink", "weight": 3, "color": "orange", "label": "R11->E", "arrows": "to"}, {"from": "R11", "to": "R12", "weight": 1, "color": "#cccccc", "title": "R11-R12"}, {"from": "R13", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R13 to Hub"}, {"from": "R15", "to": "Source", "weight": 1, "color": "darkgreen", "label": "S->R15"}, {"from": "R15", "to": "Sink", "weight": 3, "color": "orange", "label": "R15->E", "arrows": "to"}, {"from": "R17", "to": "Hub", "weight": 2, "dashes": [5, 5], "color": "gray", "title": "R17 to Hub"}, {"from": "R19", "to": "Sink", "weight": 3, "color": "orange", "label": "R19->E", "arrows": "to"}, {"from": "Source", "to": "Hub", "weight": 5, "color": "darkgreen", "width": 4, "title": "Main link to Hub"}, {"from": "Sink", "to": "Hub", "weight": 5, "color": "blue", "width": 4, "title": "Main link from Hub to Sink", "arrows": "to", "smooth": {"type": "curvedCW", "roundness": 0.2}}];
             var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 12, "color": "#333333", "face": "Tahoma"}, "borderWidth": 2, "borderWidthSelected": 4, "scaling": {"min": 10, "max": 30, "label": {"enabled": true, "min": 8, "max": 20}}, "shadow": {"enabled": true, "size": 5, "x": 3, "y": 3}}, "edges": {"width": 1, "smooth": {"type": "dynamic", "roundness": 0.5, "enabled": true}, "arrows": {"to": {"enabled": false, "scaleFactor": 0.8, "type": "arrow"}}, "color": {"color": "#848484", "highlight": "#000000", "hover": "#555555", "inherit": "from", "opacity": 1.0}, "font": {"size": 10, "color": "black", "strokeWidth": 0, "align": "horizontal"}, "scaling": {"min": 1, "max": 8, "label": {"enabled": false}}, "hoverWidth": 1.5, "selectionWidth": 2}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -15000, "springConstant": 0.05, "springLength": 120, "damping": 0.15, "avoidOverlap": 0.2, "centralGravity": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1000, "fit": true, "enabled": true, "updateInterval": 50, "onlyDynamicEdges": false}, "adaptiveTimestep": true, "minVelocity": 0.75}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": true, "keyboard": {"enabled": true, "speed": {"x": 10, "y": 10, "zoom": 0.05}, "bindToWindow": true}, "multiselect": true, "selectable": true, "selectConnectedEdges": true}, "layout": {"randomSeed": 42, "improvedLayout": true}, "groups": {"0": {"color": {"background": "cyan", "border": "blue"}, "shape": "dot"}, "1": {"color": {"background": "pink", "border": "purple"}, "shape": "square", "font": {"color": "purple"}}, "2": {"color": {"background": "yellow", "border": "orange"}, "shape": "triangle"}, "3": {"color": {"background": "lime", "border": "green"}, "shape": "triangleDown"}, "4": {"borderWidth": 3, "shadow": {"enabled": false}}, "5": {"shape": "hexagon", "color": "lightgray"}}, "configure": {"enabled": true, "showButton": false}};
 
-            var configWrapper = document.getElementById('config-panel-wrapper-fc8d7387');
-            var configHeader = document.getElementById('config-panel-header-fc8d7387');
-            var configContent = document.getElementById('config-container-content-fc8d7387');
-            var toggleButton = document.getElementById('config-toggle-btn-fc8d7387'); // Also target button for ARIA
+            var configWrapper = document.getElementById('config-panel-wrapper-e05ec516');
+            var configHeader = document.getElementById('config-panel-header-e05ec516');
+            var configContent = document.getElementById('config-container-content-e05ec516');
+            var toggleButton = document.getElementById('config-toggle-btn-e05ec516'); // Also target button for ARIA
 
             if (optionsObject.configure && optionsObject.configure.enabled) {
                 if (!optionsObject.configure.container) { // Only set if user hasn't provided one
@@ -178,7 +178,7 @@
 
             var nodes = new vis.DataSet(nodesArray);
             var edges = new vis.DataSet(edgesArray);
-            var graphContainer = document.getElementById('mynetwork-fc8d7387');
+            var graphContainer = document.getElementById('mynetwork-e05ec516');
             var data = { nodes: nodes, edges: edges };
             var network = new vis.Network(graphContainer, data, optionsObject);
 

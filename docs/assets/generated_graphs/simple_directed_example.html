@@ -62,7 +62,7 @@
             transform: rotate(-90deg); /* Right arrow for collapsed state */
         }
 
-        #config-container-content-85e611a4 {
+        #config-container-content-58acd326 {
             max-height: 40vh; /* Default expanded max height */
             overflow-y: auto;
             padding: 15px;
@@ -71,7 +71,7 @@
             transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
         }
 
-        .collapsed #config-container-content-85e611a4 {
+        .collapsed #config-container-content-58acd326 {
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
@@ -79,7 +79,7 @@
             border-bottom: none; /* Hide border when collapsed */
         }
 
-        #mynetwork-85e611a4 {
+        #mynetwork-58acd326 {
             width: 100%;
             flex-grow: 1; /* Graph takes remaining vertical space */
             min-height: 0; /* Important for flex children to shrink */
@@ -119,17 +119,17 @@
     </style>
 </head>
 <body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-85e611a4">
-        <div class="config-panel-header" id="config-panel-header-85e611a4" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-85e611a4">
+    <div class="config-panel-wrapper" id="config-panel-wrapper-58acd326">
+        <div class="config-panel-header" id="config-panel-header-58acd326" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-58acd326">
             <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-85e611a4" aria-label="Toggle configuration panel"></button>
+            <button class="config-toggle-btn" id="config-toggle-btn-58acd326" aria-label="Toggle configuration panel"></button>
         </div>
-        <div id="config-container-content-85e611a4">
+        <div id="config-container-content-58acd326">
             <!-- Vis.js configuration UI will be injected here -->
         </div>
     </div>
 
-    <div id="mynetwork-85e611a4"></div>
+    <div id="mynetwork-58acd326"></div>
 
     <script type="text/javascript">
         (function() {
@@ -137,10 +137,10 @@
             var edgesArray = [{"from": "1", "to": "2", "label": "Rel A"}, {"from": "1", "to": "3", "label": "Rel B"}, {"from": "2", "to": "4", "label": "Rel C"}, {"from": "3", "to": "4", "label": "Rel D"}, {"from": "4", "to": "1", "label": "Rel E (Cycle)"}];
             var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 14, "color": "#333"}, "borderWidth": 2}, "edges": {"width": 2, "smooth": {"type": "curvedCW", "roundness": 0.2, "enabled": true}, "arrows": {"to": {"enabled": true, "scaleFactor": 1, "type": "arrow"}}, "font": {"align": "middle", "size": 10}}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -8000, "springConstant": 0.04, "springLength": 150, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1000, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": true, "keyboard": true}, "layout": {"randomSeed": 789, "improvedLayout": true, "hierarchical": false}};
 
-            var configWrapper = document.getElementById('config-panel-wrapper-85e611a4');
-            var configHeader = document.getElementById('config-panel-header-85e611a4');
-            var configContent = document.getElementById('config-container-content-85e611a4');
-            var toggleButton = document.getElementById('config-toggle-btn-85e611a4'); // Also target button for ARIA
+            var configWrapper = document.getElementById('config-panel-wrapper-58acd326');
+            var configHeader = document.getElementById('config-panel-header-58acd326');
+            var configContent = document.getElementById('config-container-content-58acd326');
+            var toggleButton = document.getElementById('config-toggle-btn-58acd326'); // Also target button for ARIA
 
             if (optionsObject.configure && optionsObject.configure.enabled) {
                 if (!optionsObject.configure.container) { // Only set if user hasn't provided one
@@ -178,7 +178,7 @@
 
             var nodes = new vis.DataSet(nodesArray);
             var edges = new vis.DataSet(edgesArray);
-            var graphContainer = document.getElementById('mynetwork-85e611a4');
+            var graphContainer = document.getElementById('mynetwork-58acd326');
             var data = { nodes: nodes, edges: edges };
             var network = new vis.Network(graphContainer, data, optionsObject);
 
