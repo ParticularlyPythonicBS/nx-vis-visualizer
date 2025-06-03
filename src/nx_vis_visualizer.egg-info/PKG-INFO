@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: nx-vis-visualizer
+Version: 0.1.0
+Summary: A Python wrapper for rendering NetworkX graphs interactively using vis.js.
+License: MIT
+Keywords: networkx,vis.js,graph,visualization,interactive
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: networkx>=3.5
+Provides-Extra: docs
+Requires-Dist: mkdocs>=1.6.1; extra == "docs"
+Requires-Dist: mkdocs-macros-plugin>=1.3.7; extra == "docs"
+Requires-Dist: mkdocs-material>=9.6.14; extra == "docs"
+Provides-Extra: dev
+Requires-Dist: mypy>=1.16.0; extra == "dev"
+Requires-Dist: pre-commit>=4.2.0; extra == "dev"
+Requires-Dist: pytest>=8.4.0; extra == "dev"
+Requires-Dist: ruff>=0.11.12; extra == "dev"
+Requires-Dist: types-networkx>=3.5.0.20250531; extra == "dev"
+Provides-Extra: notebook
+Requires-Dist: ipython>=9.3.0; extra == "notebook"
+Dynamic: license-file
+
+
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ParticularlyPythonicBS/nx-vis-visualizer/master.svg)](https://results.pre-commit.ci/latest/github/ParticularlyPythonicBS/nx-vis-visualizer/master)
+
+# NX-VIS Visualizer
+
+A Python library to render NetworkX graphs interactively in HTML using vis.js.
+
+## Features
+
+-   Convert NetworkX graphs (Graph and DiGraph) to vis.js format.
+-   Customize vis.js options.
+-   Generate self-contained HTML files.
+-   Optionally open in browser or return HTML for Jupyter notebooks.
