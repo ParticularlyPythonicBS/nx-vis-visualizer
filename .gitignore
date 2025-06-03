@@ -12,6 +12,8 @@
 !pyproject.toml
 !uv.lock
 !.pre-commit-config.yaml
+!mkdocs.yml
+!generate_graph_examples.py
 
 
 # recursively re-ignore

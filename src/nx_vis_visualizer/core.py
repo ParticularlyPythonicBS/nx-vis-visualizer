@@ -395,11 +395,16 @@ def nx_to_vis(
             )
         # --- END DEBUG PRINTS ---
 
-    if (
-        current_options.get("layout", {})
-        .get("hierarchical", {})
-        .get("enabled", False)
-    ):
+    hierarchical_options = current_options.get("layout", {}).get("hierarchical")
+    hierarchical_enabled = False
+    if isinstance(hierarchical_options, dict):
+        hierarchical_enabled = hierarchical_options.get("enabled", False)
+    elif isinstance(
+        hierarchical_options, bool
+    ):  # Handle if 'hierarchical' itself is a boolean
+        hierarchical_enabled = hierarchical_options
+
+    if hierarchical_enabled:
         current_options.setdefault("physics", {})["enabled"] = False
         # --- START DEBUG PRINTS ---
         if isinstance(nx_graph, nx.DiGraph):
@@ -421,6 +426,18 @@ def nx_to_vis(
             f"DEBUG DiGraph: FINAL arrows.to.enabled before JSON dump: {final_arrow_to_enabled}"
         )
     # --- END DEBUG PRINTS ---
+
+    if isinstance(current_options.get("physics"), dict):
+        print(
+            f"DEBUG: current_options['physics']['enabled'] is {current_options['physics'].get('enabled')}"
+        )
+    else:
+        print(
+            f"DEBUG: current_options['physics'] is NOT a dict. It is: {current_options.get('physics')}"
+        )
+        print(
+            f"DEBUG: Full current_options['physics']: {current_options.get('physics')}"
+        )
 
     div_id_suffix: str = uuid.uuid4().hex[:8]
 

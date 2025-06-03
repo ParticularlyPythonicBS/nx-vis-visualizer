@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Iframe</title>
+    <style>
+        body { font-family: sans-serif; background-color: lightyellow; padding: 20px; }
+        h1 { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Hello from the Iframe!</h1>
+    <p>If you can see this, basic iframe embedding works.</p>
+    <p id="date-time"></p>
+    <script>
+        document.getElementById('date-time').textContent = 'Current time: ' + new Date().toLocaleTimeString();
+    </script>
+</body>
+</html>

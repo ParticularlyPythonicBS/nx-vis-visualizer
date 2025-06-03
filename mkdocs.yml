@@ -1,0 +1,68 @@
+# mkdocs.yml
+site_name: NX-VIS Visualizer
+site_url: https://particularpythonicsbs.github.io/nx-vis-visualizer/
+site_author: Anil Radhakrishnan
+repo_url: https://github.com/ParticularlyPythonicBS/nx-vis-visualizer
+repo_name: ParticularlyPythonicBS/nx-vis-visualizer
+edit_uri: edit/master/docs/
+
+theme:
+  name: material
+  features:
+    - toc.integrate
+    - header.autohide
+    - navigation.tabs
+    - navigation.sections
+    - navigation.instant # Faster navigation
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips # For better hover info
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  icon:
+    repo: fontawesome/brands/github
+
+# Extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_style: tango # Or another style you prefer
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - toc:
+      permalink: true # Adds a permalink icon to headings
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Examples:
+    - Basic Graphs: examples/basic.md
+    - Directed Graphs: examples/directed.md
+    - Customization: examples/customization.md
+
+
+# Copyright
+copyright: Copyright &copy; 2025 Anil Radhakrishnan

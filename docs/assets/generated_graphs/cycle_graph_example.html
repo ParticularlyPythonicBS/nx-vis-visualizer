@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 5-Cycle Graph</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: #f4f6f8; /* Light background for the page */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent body scrollbars */
+        }
+
+        .config-panel-wrapper {
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10; /* Ensure it's above the graph if any overlap issues */
+            flex-shrink: 0; /* Prevent panel from shrinking */
+        }
+
+        .config-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+
+        .config-panel-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .config-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+            color: #555;
+        }
+        .config-toggle-btn::after {
+            content: '\25BC'; /* Down arrow ▼ */
+            display: inline-block;
+            transition: transform 0.2s ease-in-out;
+        }
+        .collapsed .config-toggle-btn::after {
+            transform: rotate(-90deg); /* Right arrow for collapsed state */
+        }
+
+        #config-container-content-c8f009db {
+            max-height: 40vh; /* Default expanded max height */
+            overflow-y: auto;
+            padding: 15px;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+        }
+
+        .collapsed #config-container-content-c8f009db {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            overflow: hidden;
+            border-bottom: none; /* Hide border when collapsed */
+        }
+
+        #mynetwork-c8f009db {
+            width: 100%;
+            flex-grow: 1; /* Graph takes remaining vertical space */
+            min-height: 0; /* Important for flex children to shrink */
+            /* border-top: 1px solid #e0e0e0; */ /* Optional: if config panel is directly above */
+            background-color: #ffffff; /* Graph background */
+        }
+
+        /* Basic styling for vis.js config elements to blend better */
+        div.vis-configuration-wrapper {
+            padding: 0; /* Remove default padding if vis.js adds it */
+        }
+        div.vis-configuration-wrapper table {
+            width: 100%;
+        }
+        div.vis-configuration-wrapper table tr td:first-child {
+            width: 30%; /* Adjust label width */
+            font-size: 13px;
+        }
+        div.vis-configuration-wrapper input[type=text],
+        div.vis-configuration-wrapper select {
+            width: 95%;
+            padding: 6px;
+            margin: 2px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+        div.vis-configuration-wrapper input[type=range] {
+            width: 60%; /* Adjust slider width */
+        }
+        div.vis-configuration-wrapper .vis-label {
+             font-size: 13px;
+             color: #333;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="config-panel-wrapper" id="config-panel-wrapper-c8f009db">
+        <div class="config-panel-header" id="config-panel-header-c8f009db" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-c8f009db">
+            <h3>Configuration</h3>
+            <button class="config-toggle-btn" id="config-toggle-btn-c8f009db" aria-label="Toggle configuration panel"></button>
+        </div>
+        <div id="config-container-content-c8f009db">
+            <!-- Vis.js configuration UI will be injected here -->
+        </div>
+    </div>
+
+    <div id="mynetwork-c8f009db"></div>
+
+    <script type="text/javascript">
+        (function() {
+            var nodesArray = [{"id": "0", "label": "N1", "title": "Tooltip for Node N1", "group": 0, "color": "skyblue", "size": 25}, {"id": "1", "label": "N2", "title": "Tooltip for Node N2", "group": 1}, {"id": "2", "label": "N3", "title": "Tooltip for Node N3", "group": 0}, {"id": "3", "label": "N4", "title": "Tooltip for Node N4", "group": 1}, {"id": "4", "label": "N5", "title": "Tooltip for Node N5", "group": 0}];
+            var edgesArray = [{"from": "0", "to": "1", "label": "Link 0-1", "color": "green", "width": 3}, {"from": "0", "to": "4"}, {"from": "1", "to": "2"}, {"from": "2", "to": "3"}, {"from": "3", "to": "4"}];
+            var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 14, "color": "#333"}, "borderWidth": 2}, "edges": {"width": 2, "smooth": {"type": "dynamic", "roundness": 0.5, "enabled": true}, "arrows": {"to": {"enabled": false, "scaleFactor": 1}}}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -8000, "springConstant": 0.04, "springLength": 150, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1000, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": true, "keyboard": true}, "layout": {"randomSeed": 12345, "improvedLayout": true}, "groups": {"0": {"shape": "dot", "color": {"background": "lightcoral", "border": "red"}}, "1": {"shape": "square", "color": {"background": "lightgreen", "border": "green"}}}};
+
+            var configWrapper = document.getElementById('config-panel-wrapper-c8f009db');
+            var configHeader = document.getElementById('config-panel-header-c8f009db');
+            var configContent = document.getElementById('config-container-content-c8f009db');
+            var toggleButton = document.getElementById('config-toggle-btn-c8f009db'); // Also target button for ARIA
+
+            if (optionsObject.configure && optionsObject.configure.enabled) {
+                if (!optionsObject.configure.container) { // Only set if user hasn't provided one
+                    optionsObject.configure.container = configContent;
+                }
+                // optionsObject.configure.showButton = false; // User should set this in Python options
+
+                configHeader.addEventListener('click', function() {
+                    configWrapper.classList.toggle('collapsed');
+                    var isExpanded = !configWrapper.classList.contains('collapsed');
+                    configHeader.setAttribute('aria-expanded', isExpanded);
+                    toggleButton.setAttribute('aria-expanded', isExpanded); // Keep button ARIA in sync
+                });
+                configHeader.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        configWrapper.classList.toggle('collapsed');
+                        var isExpanded = !configWrapper.classList.contains('collapsed');
+                        configHeader.setAttribute('aria-expanded', isExpanded);
+                        toggleButton.setAttribute('aria-expanded', isExpanded);
+                        event.preventDefault();
+                    }
+                });
+
+                // Optional: Start collapsed by default
+                // configWrapper.classList.add('collapsed');
+                // configHeader.setAttribute('aria-expanded', 'false');
+                // toggleButton.setAttribute('aria-expanded', 'false');
+
+            } else {
+                // If configure is not enabled, hide the whole panel wrapper
+                if (configWrapper) {
+                    configWrapper.style.display = 'none';
+                }
+            }
+
+            var nodes = new vis.DataSet(nodesArray);
+            var edges = new vis.DataSet(edgesArray);
+            var graphContainer = document.getElementById('mynetwork-c8f009db');
+            var data = { nodes: nodes, edges: edges };
+            var network = new vis.Network(graphContainer, data, optionsObject);
+
+            network.on("click", function (params) {
+                console.log('Click event:', params);
+            });
+        })();
+    </script>
+</body>
+</html>

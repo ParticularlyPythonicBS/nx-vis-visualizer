@@ -6,12 +6,10 @@ from typing import Any
 
 import networkx as nx
 
-from nx_vis_visualizer import nx_to_vis
 
-
-def create_showcase_graph() -> nx.Graph[Any]:
+def create_showcase_graph() -> nx.Graph:  # type: ignore[type-arg]
     """Creates a more complex NetworkX graph for demonstration."""
-    G: nx.Graph[Any] = nx.Graph(name="Advanced Showcase Graph")
+    G: nx.Graph = nx.Graph(name="Advanced Showcase Graph")  # type: ignore[type-arg]
 
     # --- Add Nodes with various properties ---
     num_random_nodes = 20
@@ -19,13 +17,11 @@ def create_showcase_graph() -> nx.Graph[Any]:
         G.add_node(
             f"R{i}",  # Random node
             label=f"R{i}",
-            group=i % 4,  # Assign to one of 4 groups
-            value=(i % 5) + 1,  # For size scaling (1 to 5)
+            group=i % 4,
+            value=(i % 5) + 1,
             title=f"Random Node R{i}\nGroup: {i % 4}\nValue: {(i % 5) + 1}",
             font={"color": "black", "size": 10} if i % 4 == 0 else {},
         )
-
-    # Special, styled nodes
     G.add_node(
         "Source",
         label="START",
@@ -36,7 +32,7 @@ def create_showcase_graph() -> nx.Graph[Any]:
             "highlight": {"background": "green", "border": "darkgreen"},
         },
         size=30,
-        group=4,  # Special group
+        group=4,
         title="This is the main Source node",
         font={
             "size": 16,
@@ -45,9 +41,9 @@ def create_showcase_graph() -> nx.Graph[Any]:
             "strokeWidth": 1,
             "strokeColor": "white",
         },
-        fixed={"x": True, "y": True},  # Fix position
+        fixed={"x": True, "y": True},
         x=-400,
-        y=-200,  # Specify coordinates
+        y=-200,
     )
     G.add_node(
         "Sink",
@@ -70,22 +66,18 @@ def create_showcase_graph() -> nx.Graph[Any]:
         size=25,
         group=5,
         title="A central connecting hub",
-        font={
-            "multi": "html",
-            "bold": "18px arial darkblue",
-        },  # Using multi-font for bold
+        font={"multi": "html", "bold": "18px arial darkblue"},
     )
     G.add_node(
         "Isolated",
         label="I'm Alone",
         shape="text",
         title="An isolated node example",
-        color="#FFCCFF",  # Light pink
+        color="#FFCCFF",
         font={"size": 12, "color": "purple"},
     )
 
     # --- Add Edges with various properties ---
-    # Connect Source to some random nodes and Hub
     for i in range(0, num_random_nodes, 5):
         G.add_edge(
             "Source",
@@ -94,7 +86,6 @@ def create_showcase_graph() -> nx.Graph[Any]:
             color="darkgreen",
             label=f"S->R{i}",
         )
-
     G.add_edge(
         "Source",
         "Hub",
@@ -103,8 +94,6 @@ def create_showcase_graph() -> nx.Graph[Any]:
         width=4,
         title="Main link to Hub",
     )
-
-    # Connect some random nodes to Hub and Sink
     for i in range(1, num_random_nodes, 4):
         G.add_edge(
             f"R{i}",
@@ -123,7 +112,6 @@ def create_showcase_graph() -> nx.Graph[Any]:
                 label=f"R{i + 2}->E",
                 arrows="to",
             )
-
     G.add_edge(
         "Hub",
         "Sink",
@@ -134,10 +122,8 @@ def create_showcase_graph() -> nx.Graph[Any]:
         arrows="to",
         smooth={"type": "curvedCW", "roundness": 0.2},
     )
-
-    # Inter-random node connections
     for i in range(num_random_nodes - 1):
-        if random.random() < 0.2:  # Sparsely connect random nodes
+        if random.random() < 0.2:
             G.add_edge(
                 f"R{i}",
                 f"R{i + 1}",
@@ -145,8 +131,6 @@ def create_showcase_graph() -> nx.Graph[Any]:
                 color="#cccccc",
                 title=f"R{i}-R{i + 1}",
             )
-
-    # Add an edge with a complex color object
     if num_random_nodes > 5:
         G.add_edge(
             "R0",
@@ -160,177 +144,127 @@ def create_showcase_graph() -> nx.Graph[Any]:
             label="Opacity Edge",
             weight=2,
         )
-
     return G
 
 
-if __name__ == "__main__":
-    showcase_graph = create_showcase_graph()
-
-    # --- Define Custom Vis.js Options ---
-    # Start with a deep copy of defaults if you want to modify them,
-    # or define options from scratch for full control.
-    # For this showcase, let's define many options explicitly.
-    custom_vis_options: dict[str, Any] = {
-        "nodes": {
-            "borderWidth": 2,
-            "borderWidthSelected": 4,
-            "font": {
-                "size": 12,
-                "face": "Tahoma",
-                "color": "#333333",  # Default node font color
-            },
-            "scaling": {  # Scale node size based on 'value' attribute
-                "min": 10,
-                "max": 30,
-                "label": {"enabled": True, "min": 8, "max": 20},
-            },
-            "shadow": {"enabled": True, "size": 5, "x": 3, "y": 3},
+# --- Define Custom Vis.js Options at the module level ---
+custom_vis_options: dict[str, Any] = {
+    "nodes": {
+        "borderWidth": 2,
+        "borderWidthSelected": 4,
+        "font": {"size": 12, "face": "Tahoma", "color": "#333333"},
+        "scaling": {
+            "min": 10,
+            "max": 30,
+            "label": {"enabled": True, "min": 8, "max": 20},
         },
-        "edges": {
-            "width": 1,  # Default edge width
-            "color": {
-                "color": "#848484",
-                "highlight": "#000000",
-                "hover": "#555555",
-                "inherit": "from",  # Inherit color from 'from' node, or 'both', 'to', False
-                "opacity": 1.0,
-            },
-            "arrows": {  # Default arrow settings (can be overridden by individual edges)
-                "to": {"enabled": False, "scaleFactor": 0.8, "type": "arrow"},
-                # "middle": {"enabled": True, "scaleFactor":0.5, "type":"circle"},
-                # "from": {"enabled": False}
-            },
-            "smooth": {
-                "enabled": True,
-                "type": "dynamic",  # "dynamic", "continuous", "discrete", "diagonalCross", "straightCross", "horizontal", "vertical", "curvedCW", "curvedCCW", "cubicBezier"
-                "roundness": 0.5,
-            },
-            "font": {
-                "size": 10,
-                "color": "black",
-                "strokeWidth": 0,  # No stroke for edge labels by default
-                "align": "horizontal",  # "top", "middle", "bottom"
-            },
-            "scaling": {  # Scale edge width based on 'weight' attribute
-                "min": 1,
-                "max": 8,
-                "label": {"enabled": False},
-            },
-            "hoverWidth": 1.5,
-            "selectionWidth": 2,
+        "shadow": {"enabled": True, "size": 5, "x": 3, "y": 3},
+    },
+    "edges": {
+        "width": 1,
+        "color": {
+            "color": "#848484",
+            "highlight": "#000000",
+            "hover": "#555555",
+            "inherit": "from",
+            "opacity": 1.0,
         },
-        "groups": {
-            0: {
-                "color": {"background": "cyan", "border": "blue"},
-                "shape": "dot",
-            },
-            1: {
-                "color": {"background": "pink", "border": "purple"},
-                "shape": "square",
-                "font": {"color": "purple"},
-            },
-            2: {
-                "color": {"background": "yellow", "border": "orange"},
-                "shape": "triangle",
-            },
-            3: {
-                "color": {"background": "lime", "border": "green"},
-                "shape": "triangleDown",
-            },
-            4: {
-                "borderWidth": 3,
-                "shadow": {"enabled": False},
-            },  # Special group for Source/Sink
-            5: {"shape": "hexagon", "color": "lightgray"},  # Hub group
+        "arrows": {
+            "to": {"enabled": False, "scaleFactor": 0.8, "type": "arrow"}
         },
-        "layout": {
-            "randomSeed": 42,  # For reproducible layout if physics is re-enabled
-            "improvedLayout": True,
-            # Example for hierarchical layout (disable physics if using this)
-            # "hierarchical": {
-            #     "enabled": False,
-            #     "direction": "UD",  # UD, DU, LR, RL
-            #     "sortMethod": "directed",  # hubsize, directed
-            #     "shakeTowards": "roots"
-            # }
+        "smooth": {"enabled": True, "type": "dynamic", "roundness": 0.5},
+        "font": {
+            "size": 10,
+            "color": "black",
+            "strokeWidth": 0,
+            "align": "horizontal",
         },
-        "interaction": {
-            "hover": True,
-            "dragNodes": True,  # Can nodes be dragged?
-            "dragView": True,  # Can the view be dragged?
-            "zoomView": True,
-            "navigationButtons": True,  # Show zoom and fit buttons
-            "tooltipDelay": 200,
-            "keyboard": {
-                "enabled": True,
-                "speed": {"x": 10, "y": 10, "zoom": 0.05},
-                "bindToWindow": True,
-            },
-            "multiselect": True,
-            "selectable": True,
-            "selectConnectedEdges": True,
+        "scaling": {"min": 1, "max": 8, "label": {"enabled": False}},
+        "hoverWidth": 1.5,
+        "selectionWidth": 2,
+    },
+    "groups": {
+        0: {"color": {"background": "cyan", "border": "blue"}, "shape": "dot"},
+        1: {
+            "color": {"background": "pink", "border": "purple"},
+            "shape": "square",
+            "font": {"color": "purple"},
         },
-        "physics": {
-            "enabled": True,  # Nodes with fixed:true will ignore physics
-            "solver": "barnesHut",  # barnesHut, forceAtlas2Based, repulsion, hierarchicalRepulsion
-            "barnesHut": {
-                "gravitationalConstant": -15000,
-                "centralGravity": 0.1,
-                "springLength": 120,
-                "springConstant": 0.05,
-                "damping": 0.15,
-                "avoidOverlap": 0.2,
-            },
-            # "forceAtlas2Based": {
-            #     "gravitationalConstant": -50,
-            #     "centralGravity": 0.01,
-            #     "springLength": 100,
-            #     "springConstant": 0.08,
-            #     "damping": 0.4,
-            #     "avoidOverlap": 0
-            # },
-            "stabilization": {  # Run stabilization before displaying
-                "enabled": True,
-                "iterations": 1000,  # More iterations for better layout
-                "updateInterval": 50,
-                "onlyDynamicEdges": False,
-                "fit": True,  # Fit the network to the screen after stabilization
-            },
-            "adaptiveTimestep": True,
-            "minVelocity": 0.75,
+        2: {
+            "color": {"background": "yellow", "border": "orange"},
+            "shape": "triangle",
         },
-        "configure": {  # Show the configuration GUI
+        3: {
+            "color": {"background": "lime", "border": "green"},
+            "shape": "triangleDown",
+        },
+        4: {"borderWidth": 3, "shadow": {"enabled": False}},
+        5: {"shape": "hexagon", "color": "lightgray"},
+    },
+    "layout": {"randomSeed": 42, "improvedLayout": True},
+    "interaction": {
+        "hover": True,
+        "dragNodes": True,
+        "dragView": True,
+        "zoomView": True,
+        "navigationButtons": True,
+        "tooltipDelay": 200,
+        "keyboard": {
             "enabled": True,
-            # "filter": "nodes,edges,layout,interaction,physics", # String or array or function
-            "showButton": False,  # Show a button to toggle the configurator
+            "speed": {"x": 10, "y": 10, "zoom": 0.05},
+            "bindToWindow": True,
         },
-    }
+        "multiselect": True,
+        "selectable": True,
+        "selectConnectedEdges": True,
+    },
+    "physics": {
+        "enabled": True,
+        "solver": "barnesHut",
+        "barnesHut": {
+            "gravitationalConstant": -15000,
+            "centralGravity": 0.1,
+            "springLength": 120,
+            "springConstant": 0.05,
+            "damping": 0.15,
+            "avoidOverlap": 0.2,
+        },
+        "stabilization": {
+            "enabled": True,
+            "iterations": 1000,
+            "updateInterval": 50,
+            "onlyDynamicEdges": False,
+            "fit": True,
+        },
+        "adaptiveTimestep": True,
+        "minVelocity": 0.75,
+    },
+    "configure": {"enabled": True, "showButton": False},
+}
 
-    # Define output path relative to this script for cleanliness
+
+if __name__ == "__main__":
+    from nx_vis_visualizer import nx_to_vis
+
+    showcase_graph = create_showcase_graph()
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    output_file = os.path.join(current_dir, "advanced_showcase_graph.html")
+    output_file = os.path.join(
+        current_dir, "advanced_showcase_graph_DIRECT_RUN.html"
+    )  # Different name to avoid clash
 
     print(
-        f"Generating advanced showcase graph with {showcase_graph.number_of_nodes()} nodes and {showcase_graph.number_of_edges()} edges..."
+        f"Generating advanced showcase graph (direct run) with {showcase_graph.number_of_nodes()} nodes and {showcase_graph.number_of_edges()} edges..."
     )
     file_path = nx_to_vis(
         showcase_graph,
         output_filename=output_file,
-        html_title="NX-VIS Visualizer - Advanced Showcase",
-        vis_options=custom_vis_options,
+        html_title="NX-VIS Visualizer - Advanced Showcase (Direct Run)",
+        vis_options=custom_vis_options,  # Uses the module-level variable
         show_browser=True,
-        graph_height="90vh",  # Make it take most of the viewport height
+        graph_height="90vh",
         graph_width="100%",
     )
-
     if file_path:
-        print(f"Advanced showcase graph saved to: {file_path}")
-        print(
-            "Open this HTML file in your browser to see the interactive graph."
-        )
-        print(
-            "Try using the configuration panel (usually a button at the bottom) to tweak settings live!"
-        )
+        print(f"Advanced showcase graph (direct run) saved to: {file_path}")
     else:
-        print("Failed to generate the advanced showcase graph.")
+        print("Failed to generate the advanced showcase graph (direct run).")

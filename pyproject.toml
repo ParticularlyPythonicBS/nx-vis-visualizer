@@ -30,7 +30,6 @@ dependencies = [
 [project.optional-dependencies]
 docs = [
     "mkdocs>=1.6.1",
-    "mkdocs-macros-plugin>=1.3.7",
     "mkdocs-material>=9.6.14",
 ]
 
@@ -74,7 +73,7 @@ no_implicit_reexport = true
 warn_unreachable = true
 ignore_missing_imports = true
 
-files = ["src/nx_vis_visualizer", "tests", "examples", "docs/main.py"]
+files = ["src/nx_vis_visualizer", "tests", "examples"]
 
 [tool.uv.sources]
 nx-vis-visualizer = { workspace = true }

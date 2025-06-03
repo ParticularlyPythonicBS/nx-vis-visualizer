@@ -22,7 +22,6 @@ License-File: LICENSE
 Requires-Dist: networkx>=3.5
 Provides-Extra: docs
 Requires-Dist: mkdocs>=1.6.1; extra == "docs"
-Requires-Dist: mkdocs-macros-plugin>=1.3.7; extra == "docs"
 Requires-Dist: mkdocs-material>=9.6.14; extra == "docs"
 Provides-Extra: dev
 Requires-Dist: nx-vis-visualizer; extra == "dev"
