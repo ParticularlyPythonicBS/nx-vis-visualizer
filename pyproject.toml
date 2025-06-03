@@ -37,6 +37,7 @@ dev = [
     "mypy>=1.16.0",
     "pre-commit>=4.2.0",
     "pytest>=8.4.0",
+    "pytest-cov>=6.1.1",
     "ruff>=0.11.12",
     "types-networkx>=3.5.0.20250531",
 ]
@@ -46,8 +47,8 @@ notebook = [
 
 [tool.ruff]
 line-length = 80
-select = ["E", "W", "F", "I", "UP", "C4", "B", "A", "RUF"]
-ignore = ["E501"] # Handled by formatter
+lint.select = ["E", "W", "F", "I", "UP", "C4", "B", "A", "RUF"]
+lint.ignore = ["E501"] # Handled by formatter
 
 [tool.ruff.format]
 quote-style = "double"
@@ -68,10 +69,6 @@ disallow_incomplete_defs = true
 disallow_untyped_defs = true
 no_implicit_reexport = true
 warn_unreachable = true
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "IPython.*"
 ignore_missing_imports = true
 
 files = ["src/nx_vis_visualizer", "tests", "examples", "docs/main.py"]
