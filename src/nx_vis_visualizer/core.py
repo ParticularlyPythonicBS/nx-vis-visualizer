@@ -4,7 +4,7 @@ import json
 import os
 import uuid
 import webbrowser
-from html import escape  # For safely embedding JSON into script tags
+from html import escape
 from typing import Any, TypeVar, cast
 
 import networkx as nx
@@ -12,17 +12,10 @@ import networkx as nx
 # Runtime compatible TypeVar for NetworkX graphs
 GraphType = TypeVar("GraphType", nx.Graph, nx.DiGraph)  # type: ignore[type-arg]
 
-# For JSON serializable data (Python 3.9+ syntax for Union with built-ins)
 JSONSerializable = dict[str, Any] | list[Any] | str | int | float | bool | None
 
-# --- Corrected IPython HTML Typing using built-in `type` ---
-# This will store the *type* of IPython.display.HTML if available, otherwise None.
-IPythonHTMLClass = (
-    type[Any] | None
-)  # Alias for the class type (type[SomeClass]) or None
-IPythonHTMLInstance = (
-    Any  # Alias for an instance of HTML (or str if not available)
-)
+IPythonHTMLClass = type[Any] | None
+IPythonHTMLInstance = Any
 
 iPythonHtmlClassGlobal: IPythonHTMLClass  # Declare with the alias
 
@@ -286,13 +279,9 @@ def _deep_merge_dicts(
     for key, source_value in source.items():
         dest_value = destination.get(key)
 
-        # print(f"MERGE CALL {call_id}: key='{key}', type(source_value)={type(source_value)}, type(dest_value)={type(dest_value)}")
-
         if isinstance(source_value, dict) and isinstance(dest_value, dict):
-            # print(f"MERGE CALL {call_id}: Recursing for key='{key}'")
             _deep_merge_dicts(source_value, dest_value)
         else:
-            # print(f"MERGE CALL {call_id}: Assigning for key='{key}'. Destination type before assignment: {type(destination)}")
             try:
                 destination[key] = source_value
             except TypeError as e:
@@ -300,13 +289,11 @@ def _deep_merge_dicts(
                     f"MERGE CALL {call_id}: TypeError during assignment for key='{key}'"
                 )
                 print(f"  destination type: {type(destination)}")
-                print(
-                    f"  destination value: {destination!r}"
-                )  # repr for more detail
+                print(f"  destination value: {destination!r}")
                 print(f"  key: {key!r}")
                 print(f"  source_value type: {type(source_value)}")
                 print(f"  source_value: {source_value!r}")
-                raise e  # Re-raise the original error
+                raise e
     return destination
 
 
@@ -463,15 +450,8 @@ def nx_to_vis(
 
     if notebook:
         if iPythonHtmlClassGlobal is not None:
-            # iPythonHtmlClassGlobal is the actual IPython.display.HTML class
-            # We are calling the constructor of the class.
-            # If types-ipython stubs are good, MyPy should understand this.
-            # If it still complains about "Call to untyped function",
-            # it means the stubs aren't perfect for the constructor.
             html_instance = iPythonHtmlClassGlobal(html_content)
-            return cast(
-                IPythonHTMLInstance, html_instance
-            )  # Cast to expected instance type
+            return cast(IPythonHTMLInstance, html_instance)
         else:
             print("IPython is not available. Returning raw HTML string.")
             return html_content

@@ -109,7 +109,7 @@ if __name__ == "__main__":
     )
 
     generate_graph_from_example(
-        example_module_name="advanced_showcase",  # Module name is 'advanced_showcase'
+        example_module_name="customization_example",
         graph_creation_func_name="create_showcase_graph",
         vis_options_var_name="custom_vis_options",
         output_graph_filename="advanced_showcase_example.html",

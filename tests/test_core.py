@@ -10,7 +10,6 @@ import pytest
 from nx_vis_visualizer import DEFAULT_VIS_OPTIONS, nx_to_vis
 
 
-# A fixture to create a simple graph for tests
 @pytest.fixture  # type: ignore[misc]
 def simple_graph() -> nx.Graph:  # type: ignore[type-arg]
     G: nx.Graph = nx.Graph()  # type: ignore[type-arg]
@@ -449,8 +448,6 @@ def test_complex_graph_with_options(
     )
 
     default_border_width = default_nodes_options.get("borderWidth")
-    # We expect borderWidth to exist and be a number (or whatever its type is)
-    # Add an assertion for its existence if necessary, or that it's not None
     assert default_border_width is not None, (
         "borderWidth missing in DEFAULT_VIS_OPTIONS['nodes']"
     )

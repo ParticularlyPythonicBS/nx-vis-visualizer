@@ -1,6 +1,5 @@
 # examples/advanced_showcase.py
 
-import os
 import random
 from typing import Any
 
@@ -241,30 +240,3 @@ custom_vis_options: dict[str, Any] = {
     },
     "configure": {"enabled": True, "showButton": False},
 }
-
-
-if __name__ == "__main__":
-    from nx_vis_visualizer import nx_to_vis
-
-    showcase_graph = create_showcase_graph()
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    output_file = os.path.join(
-        current_dir, "advanced_showcase_graph_DIRECT_RUN.html"
-    )  # Different name to avoid clash
-
-    print(
-        f"Generating advanced showcase graph (direct run) with {showcase_graph.number_of_nodes()} nodes and {showcase_graph.number_of_edges()} edges..."
-    )
-    file_path = nx_to_vis(
-        showcase_graph,
-        output_filename=output_file,
-        html_title="NX-VIS Visualizer - Advanced Showcase (Direct Run)",
-        vis_options=custom_vis_options,  # Uses the module-level variable
-        show_browser=True,
-        graph_height="90vh",
-        graph_width="100%",
-    )
-    if file_path:
-        print(f"Advanced showcase graph (direct run) saved to: {file_path}")
-    else:
-        print("Failed to generate the advanced showcase graph (direct run).")

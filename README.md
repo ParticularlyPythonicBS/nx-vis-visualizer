@@ -9,7 +9,7 @@
 
 **NX-VIS Visualizer** is a Python library designed to bridge the gap between [NetworkX](https://networkx.org/), a powerful graph manipulation library, and [vis.js Network](https://visjs.github.io/vis-network/docs/network/), a dynamic, browser-based visualization library. It allows you to easily render your NetworkX graphs as interactive HTML files or embed them directly into Jupyter Notebooks.
 
-**[View the Documentation & Live Examples](https://nx-vis-visualizer.netlify.app/)**
+**[View the Documentation & Live Examples](https://nx-vis-visualizer.anilr.dev/)**
 
 ## Key Features
 
