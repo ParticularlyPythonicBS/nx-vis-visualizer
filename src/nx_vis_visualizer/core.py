@@ -1,6 +1,7 @@
 # src/nx_vis_visualizer/core.py
 
 import json
+import logging
 import os
 import uuid
 import webbrowser
@@ -8,6 +9,8 @@ from html import escape
 from typing import Any, TypeVar, cast
 
 import networkx as nx
+
+logger = logging.getLogger(__name__)
 
 # Runtime compatible TypeVar for NetworkX graphs
 GraphType = TypeVar("GraphType", nx.Graph, nx.DiGraph)  # type: ignore[type-arg]
@@ -300,17 +303,47 @@ def _deep_merge_dicts(
 def nx_to_vis(
     nx_graph: GraphType,
     output_filename: str = "vis_network.html",
-    html_title: str = "NetworkX to vis.js Graph",  # This is for the <title> tag
+    html_title: str = "NetworkX to vis.js Graph",
     vis_options: dict[str, Any] | None = None,
     show_browser: bool = True,
     notebook: bool = False,
     override_node_properties: dict[str, Any] | None = None,
     override_edge_properties: dict[str, Any] | None = None,
     graph_width: str = "100%",
-    graph_height: str = "95vh",
+    graph_height: str = "95vh",  # Default height for the graph container within the page
     cdn_js: str = "https://unpkg.com/vis-network/standalone/umd/vis-network.min.js",
     cdn_css: str = "https://unpkg.com/vis-network/styles/vis-network.min.css",
+    verbosity: int = 0,  # 0: silent (only errors/warnings), 1: info, 2: debug
 ) -> str | IPythonHTMLInstance | None:
+    """
+    Converts a NetworkX graph to an interactive HTML file using vis.js.
+
+    Args:
+        nx_graph: The NetworkX graph object (Graph or DiGraph).
+        output_filename: Name of the HTML file to generate.
+        html_title: The title for the HTML page.
+        vis_options: A dictionary of vis.js options to customize the visualization.
+                     These will be deep-merged with default options.
+        show_browser: If True, automatically opens the generated HTML file in a web browser.
+        notebook: If True, returns HTML content suitable for embedding in Jupyter Notebooks.
+                  `show_browser` is typically False when `notebook` is True.
+        override_node_properties: A dictionary of properties to apply to all nodes,
+                                  overriding existing attributes.
+        override_edge_properties: A dictionary of properties to apply to all edges,
+                                  overriding existing attributes.
+        graph_width: CSS width for the graph container (default: "100%").
+        graph_height: CSS height for the graph container (default: "95vh").
+        cdn_js: URL for the vis.js Network JavaScript library.
+        cdn_css: URL for the vis.js Network CSS.
+        verbosity: Controls the amount of logging output.
+                   0: Errors/Warnings only.
+                   1: Info messages (e.g., file saved).
+                   2: Debug messages (more detailed, for library development).
+
+    Returns:
+        If `notebook` is True, returns the HTML string or an IPython.display.HTML object.
+        Otherwise, returns the absolute path to the generated HTML file, or None on error.
+    """
     nodes_data: list[dict[str, Any]] = []
     node_ids_map: dict[Any, str] = {}
 
@@ -318,14 +351,18 @@ def nx_to_vis(
         node_id_str = str(node_obj)
         node_ids_map[node_obj] = node_id_str
         node_entry: dict[str, Any] = {"id": node_id_str}
-        if "label" not in attrs:
+        if "label" not in attrs:  # Default label to node ID if not specified
             node_entry["label"] = node_id_str
         for key, value in attrs.items():
-            if isinstance(value, list | dict):
+            if isinstance(value, list | dict):  # Check if list or dict
                 try:
-                    json.dumps(value)
+                    json.dumps(value)  # Check if JSON serializable
                     node_entry[key] = value
                 except (TypeError, OverflowError):
+                    if verbosity >= 2:
+                        logger.debug(
+                            f"Node {node_id_str} attribute '{key}' not JSON serializable, converting to string: {value}"
+                        )
                     node_entry[key] = str(value)
             else:
                 node_entry[key] = value
@@ -339,12 +376,22 @@ def nx_to_vis(
             "from": node_ids_map[u_obj],
             "to": node_ids_map[v_obj],
         }
+        # If it's a MultiGraph or MultiDiGraph, vis.js needs unique edge IDs
+        # if they are to be manipulated individually by ID later.
+        # We can generate one if not provided.
+        if "id" not in attrs and nx_graph.is_multigraph():
+            edge_entry["id"] = str(uuid.uuid4())
+
         for key, value in attrs.items():
             if isinstance(value, list | dict):
                 try:
                     json.dumps(value)
                     edge_entry[key] = value
                 except (TypeError, OverflowError):
+                    if verbosity >= 2:
+                        logger.debug(
+                            f"Edge ({u_obj}-{v_obj}) attribute '{key}' not JSON serializable, converting to string: {value}"
+                        )
                     edge_entry[key] = str(value)
             else:
                 edge_entry[key] = value
@@ -352,88 +399,61 @@ def nx_to_vis(
             edge_entry.update(override_edge_properties)
         edges_data.append(edge_entry)
 
+    # Start with a deep copy of default options to avoid modifying the global default
     current_options: dict[str, Any] = json.loads(
         json.dumps(DEFAULT_VIS_OPTIONS)
     )
 
-    # --- START DEBUG PRINTS ---
     if isinstance(nx_graph, nx.DiGraph):
-        print(
-            f"DEBUG DiGraph: Initial arrows.to.enabled from DEFAULT: {current_options.get('edges', {}).get('arrows', {}).get('to', {}).get('enabled')}"
-        )
-    # --- END DEBUG PRINTS ---
-
-    if isinstance(nx_graph, nx.DiGraph):
+        # Ensure 'to' exists before trying to set 'enabled'
         current_options.setdefault("edges", {}).setdefault(
             "arrows", {}
         ).setdefault("to", {})["enabled"] = True
-        # --- START DEBUG PRINTS ---
-        print(
-            f"DEBUG DiGraph: arrows.to.enabled AFTER DiGraph specific set: {current_options.get('edges', {}).get('arrows', {}).get('to', {}).get('enabled')}"
-        )
-        # --- END DEBUG PRINTS ---
+        if verbosity >= 2:
+            logger.debug("DiGraph: Defaulted arrows.to.enabled to True.")
 
     if vis_options:
-        _deep_merge_dicts(vis_options, current_options)
-        # --- START DEBUG PRINTS ---
-        if isinstance(nx_graph, nx.DiGraph):
-            print(
-                f"DEBUG DiGraph: arrows.to.enabled AFTER vis_options merge: {current_options.get('edges', {}).get('arrows', {}).get('to', {}).get('enabled')}"
-            )
-        # --- END DEBUG PRINTS ---
+        if verbosity >= 2:
+            logger.debug(f"Merging user vis_options: {vis_options}")
+        _deep_merge_dicts(
+            vis_options, current_options
+        )  # User options override defaults
+        if verbosity >= 2:
+            logger.debug(f"Options after user merge: {current_options}")
 
+    # Handle hierarchical layout implications for physics
     hierarchical_options = current_options.get("layout", {}).get("hierarchical")
     hierarchical_enabled = False
     if isinstance(hierarchical_options, dict):
         hierarchical_enabled = hierarchical_options.get("enabled", False)
-    elif isinstance(
-        hierarchical_options, bool
-    ):  # Handle if 'hierarchical' itself is a boolean
+    elif isinstance(hierarchical_options, bool):
         hierarchical_enabled = hierarchical_options
 
     if hierarchical_enabled:
         current_options.setdefault("physics", {})["enabled"] = False
-        # --- START DEBUG PRINTS ---
-        if isinstance(nx_graph, nx.DiGraph):
-            print(
-                f"DEBUG DiGraph: arrows.to.enabled AFTER hierarchical check: {current_options.get('edges', {}).get('arrows', {}).get('to', {}).get('enabled')}"
+        if verbosity >= 2:
+            logger.debug("Hierarchical layout enabled, physics disabled.")
+
+    if verbosity >= 2:
+        if isinstance(current_options.get("physics"), dict):
+            logger.debug(
+                f"Final physics.enabled: {current_options['physics'].get('enabled')}"
             )
-        # --- END DEBUG PRINTS ---
-
-    # --- START DEBUG PRINTS ---
-    # Final check right before serialization for DiGraphs
-    if isinstance(nx_graph, nx.DiGraph):
-        final_arrow_to_enabled = (
-            current_options.get("edges", {})
-            .get("arrows", {})
-            .get("to", {})
-            .get("enabled")
-        )
-        print(
-            f"DEBUG DiGraph: FINAL arrows.to.enabled before JSON dump: {final_arrow_to_enabled}"
-        )
-    # --- END DEBUG PRINTS ---
-
-    if isinstance(current_options.get("physics"), dict):
-        print(
-            f"DEBUG: current_options['physics']['enabled'] is {current_options['physics'].get('enabled')}"
-        )
-    else:
-        print(
-            f"DEBUG: current_options['physics'] is NOT a dict. It is: {current_options.get('physics')}"
-        )
-        print(
-            f"DEBUG: Full current_options['physics']: {current_options.get('physics')}"
-        )
+        else:
+            logger.debug(
+                f"Final physics options is not a dict: {current_options.get('physics')}"
+            )
+        if isinstance(nx_graph, nx.DiGraph) and isinstance(
+            current_options.get("edges", {}).get("arrows", {}).get("to"), dict
+        ):
+            logger.debug(
+                f"Final arrows.to.enabled for DiGraph: {current_options['edges']['arrows']['to'].get('enabled')}"
+            )
 
     div_id_suffix: str = uuid.uuid4().hex[:8]
-
-    # Generate JSON strings *without* HTML escaping for direct JS embedding
     nodes_json_str: str = json.dumps(nodes_data)
     edges_json_str: str = json.dumps(edges_data)
     options_json_str: str = json.dumps(current_options)
-
-    # The HTML page title *should* be escaped
     escaped_html_page_title: str = escape(html_title)
 
     html_content: str = HTML_TEMPLATE.format(
@@ -442,8 +462,8 @@ def nx_to_vis(
         edges_json_str=edges_json_str,
         options_json_str=options_json_str,
         div_id_suffix=div_id_suffix,
-        width=graph_width,
-        height=graph_height,
+        width=graph_width,  # These are for the #mynetwork div style if needed by template
+        height=graph_height,  # (currently template uses flex-grow)
         cdn_js_url=cdn_js,
         cdn_css_url=cdn_css,
     )
@@ -453,7 +473,10 @@ def nx_to_vis(
             html_instance = iPythonHtmlClassGlobal(html_content)
             return cast(IPythonHTMLInstance, html_instance)
         else:
-            print("IPython is not available. Returning raw HTML string.")
+            if verbosity >= 1:
+                logger.info(
+                    "IPython is not available. Returning raw HTML string for notebook mode."
+                )
             return html_content
 
     abs_path: str | None = None
@@ -461,15 +484,16 @@ def nx_to_vis(
         with open(output_filename, "w", encoding="utf-8") as f:
             f.write(html_content)
         abs_path = os.path.abspath(output_filename)
-        print(f"Generated graph HTML at: {abs_path}")
+        if verbosity >= 1:
+            logger.info(f"Generated graph HTML at: {abs_path}")
     except OSError as e:
-        print(f"Error writing file {output_filename}: {e}")
+        logger.error(f"Error writing file {output_filename}: {e}")
         return None
 
     if show_browser and abs_path:
         try:
             webbrowser.open("file://" + abs_path)
         except Exception as e:
-            print(f"Could not open browser: {e}")
+            logger.warning(f"Could not open browser: {e}")
 
     return abs_path

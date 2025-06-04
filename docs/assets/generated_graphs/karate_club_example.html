@@ -62,7 +62,7 @@
             transform: rotate(-90deg); /* Right arrow for collapsed state */
         }
 
-        #config-container-content-c3836f70 {
+        #config-container-content-fdedba83 {
             max-height: 40vh; /* Default expanded max height */
             overflow-y: auto;
             padding: 15px;
@@ -71,7 +71,7 @@
             transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
         }
 
-        .collapsed #config-container-content-c3836f70 {
+        .collapsed #config-container-content-fdedba83 {
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
@@ -79,7 +79,7 @@
             border-bottom: none; /* Hide border when collapsed */
         }
 
-        #mynetwork-c3836f70 {
+        #mynetwork-fdedba83 {
             width: 100%;
             flex-grow: 1; /* Graph takes remaining vertical space */
             min-height: 0; /* Important for flex children to shrink */
@@ -119,17 +119,17 @@
     </style>
 </head>
 <body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-c3836f70">
-        <div class="config-panel-header" id="config-panel-header-c3836f70" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-c3836f70">
+    <div class="config-panel-wrapper" id="config-panel-wrapper-fdedba83">
+        <div class="config-panel-header" id="config-panel-header-fdedba83" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-fdedba83">
             <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-c3836f70" aria-label="Toggle configuration panel"></button>
+            <button class="config-toggle-btn" id="config-toggle-btn-fdedba83" aria-label="Toggle configuration panel"></button>
         </div>
-        <div id="config-container-content-c3836f70">
+        <div id="config-container-content-fdedba83">
             <!-- Vis.js configuration UI will be injected here -->
         </div>
     </div>
 
-    <div id="mynetwork-c3836f70"></div>
+    <div id="mynetwork-fdedba83"></div>
 
     <script type="text/javascript">
         (function() {
@@ -137,10 +137,10 @@
             var edgesArray = [{"from": "0", "to": "1", "weight": 4}, {"from": "0", "to": "2", "weight": 5}, {"from": "0", "to": "3", "weight": 3}, {"from": "0", "to": "4", "weight": 3}, {"from": "0", "to": "5", "weight": 3}, {"from": "0", "to": "6", "weight": 3}, {"from": "0", "to": "7", "weight": 2}, {"from": "0", "to": "8", "weight": 2}, {"from": "0", "to": "10", "weight": 2}, {"from": "0", "to": "11", "weight": 3}, {"from": "0", "to": "12", "weight": 1}, {"from": "0", "to": "13", "weight": 3}, {"from": "0", "to": "17", "weight": 2}, {"from": "0", "to": "19", "weight": 2}, {"from": "0", "to": "21", "weight": 2}, {"from": "0", "to": "31", "weight": 2}, {"from": "1", "to": "2", "weight": 6}, {"from": "1", "to": "3", "weight": 3}, {"from": "1", "to": "7", "weight": 4}, {"from": "1", "to": "13", "weight": 5}, {"from": "1", "to": "17", "weight": 1}, {"from": "1", "to": "19", "weight": 2}, {"from": "1", "to": "21", "weight": 2}, {"from": "1", "to": "30", "weight": 2}, {"from": "2", "to": "3", "weight": 3}, {"from": "2", "to": "7", "weight": 4}, {"from": "2", "to": "8", "weight": 5}, {"from": "2", "to": "9", "weight": 1}, {"from": "2", "to": "13", "weight": 3}, {"from": "2", "to": "27", "weight": 2}, {"from": "2", "to": "28", "weight": 2}, {"from": "2", "to": "32", "weight": 2}, {"from": "3", "to": "7", "weight": 3}, {"from": "3", "to": "12", "weight": 3}, {"from": "3", "to": "13", "weight": 3}, {"from": "4", "to": "6", "weight": 2}, {"from": "4", "to": "10", "weight": 3}, {"from": "5", "to": "6", "weight": 5}, {"from": "5", "to": "10", "weight": 3}, {"from": "5", "to": "16", "weight": 3}, {"from": "6", "to": "16", "weight": 3}, {"from": "8", "to": "30", "weight": 3}, {"from": "8", "to": "32", "weight": 3}, {"from": "8", "to": "33", "weight": 4}, {"from": "9", "to": "33", "weight": 2}, {"from": "13", "to": "33", "weight": 3}, {"from": "14", "to": "32", "weight": 3}, {"from": "14", "to": "33", "weight": 2}, {"from": "15", "to": "32", "weight": 3}, {"from": "15", "to": "33", "weight": 4}, {"from": "18", "to": "32", "weight": 1}, {"from": "18", "to": "33", "weight": 2}, {"from": "19", "to": "33", "weight": 1}, {"from": "20", "to": "32", "weight": 3}, {"from": "20", "to": "33", "weight": 1}, {"from": "22", "to": "32", "weight": 2}, {"from": "22", "to": "33", "weight": 3}, {"from": "23", "to": "25", "weight": 5}, {"from": "23", "to": "27", "weight": 4}, {"from": "23", "to": "29", "weight": 3}, {"from": "23", "to": "32", "weight": 5}, {"from": "23", "to": "33", "weight": 4}, {"from": "24", "to": "25", "weight": 2}, {"from": "24", "to": "27", "weight": 3}, {"from": "24", "to": "31", "weight": 2}, {"from": "25", "to": "31", "weight": 7}, {"from": "26", "to": "29", "weight": 4}, {"from": "26", "to": "33", "weight": 2}, {"from": "27", "to": "33", "weight": 4}, {"from": "28", "to": "31", "weight": 2}, {"from": "28", "to": "33", "weight": 2}, {"from": "29", "to": "32", "weight": 4}, {"from": "29", "to": "33", "weight": 2}, {"from": "30", "to": "32", "weight": 3}, {"from": "30", "to": "33", "weight": 3}, {"from": "31", "to": "32", "weight": 4}, {"from": "31", "to": "33", "weight": 4}, {"from": "32", "to": "33", "weight": 5}];
             var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 12, "color": "#333"}, "borderWidth": 2, "scaling": {"min": 10, "max": 30, "label": {"enabled": false}}}, "edges": {"width": 0.5, "smooth": false, "arrows": {"to": {"enabled": false, "scaleFactor": 1}}, "color": "silver"}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -10000, "springConstant": 0.04, "springLength": 120, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1200, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": false, "keyboard": true}, "layout": {"randomSeed": 42, "improvedLayout": true}, "groups": {"Mr. Hi": {"color": {"background": "orange", "border": "darkorange"}, "shape": "dot"}, "Officer": {"color": {"background": "purple", "border": "indigo"}, "shape": "ellipse"}}};
 
-            var configWrapper = document.getElementById('config-panel-wrapper-c3836f70');
-            var configHeader = document.getElementById('config-panel-header-c3836f70');
-            var configContent = document.getElementById('config-container-content-c3836f70');
-            var toggleButton = document.getElementById('config-toggle-btn-c3836f70'); // Also target button for ARIA
+            var configWrapper = document.getElementById('config-panel-wrapper-fdedba83');
+            var configHeader = document.getElementById('config-panel-header-fdedba83');
+            var configContent = document.getElementById('config-container-content-fdedba83');
+            var toggleButton = document.getElementById('config-toggle-btn-fdedba83'); // Also target button for ARIA
 
             if (optionsObject.configure && optionsObject.configure.enabled) {
                 if (!optionsObject.configure.container) { // Only set if user hasn't provided one
@@ -178,7 +178,7 @@
 
             var nodes = new vis.DataSet(nodesArray);
             var edges = new vis.DataSet(edgesArray);
-            var graphContainer = document.getElementById('mynetwork-c3836f70');
+            var graphContainer = document.getElementById('mynetwork-fdedba83');
             var data = { nodes: nodes, edges: edges };
             var network = new vis.Network(graphContainer, data, optionsObject);
 

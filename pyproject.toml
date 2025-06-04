@@ -1,6 +1,6 @@
 [project]
 name = "nx-vis-visualizer"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Python wrapper for rendering NetworkX graphs interactively using vis.js."
 readme = "README.md"
 requires-python = ">=3.12"

@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: nx-vis-visualizer
-Version: 0.1.0
+Version: 0.1.1
 Summary: A Python wrapper for rendering NetworkX graphs interactively using vis.js.
 License: MIT
 Keywords: networkx,vis.js,graph,visualization,interactive
