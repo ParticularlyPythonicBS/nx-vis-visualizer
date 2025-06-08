@@ -4,7 +4,7 @@ import importlib
 import os
 import sys
 
-import networkx as nx  # Keep for type hinting if G is passed around
+import networkx as nx
 
 # --- Configuration ---
 DOCS_DIR = "docs"
