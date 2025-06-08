@@ -10,7 +10,7 @@ from typing import Any, TypeVar, cast
 
 import networkx as nx
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("nx_vis_visualizer")
 
 # Runtime compatible TypeVar for NetworkX graphs
 GraphType = TypeVar("GraphType", nx.Graph, nx.DiGraph)  # type: ignore[type-arg]
