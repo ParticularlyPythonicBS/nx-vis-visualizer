@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,7 +61,7 @@
             transform: rotate(-90deg); /* Right arrow for collapsed state */
         }
 
-        #config-container-content-574513c8 {
+        #config-container-content-91afbe64 {
             max-height: 40vh; /* Default expanded max height */
             overflow-y: auto;
             padding: 15px;
@@ -71,7 +70,7 @@
             transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
         }
 
-        .collapsed #config-container-content-574513c8 {
+        .collapsed #config-container-content-91afbe64 {
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
@@ -79,80 +78,116 @@
             border-bottom: none; /* Hide border when collapsed */
         }
 
-        #mynetwork-574513c8 {
+        #mynetwork-91afbe64 {
             width: 100%;
             flex-grow: 1; /* Graph takes remaining vertical space */
             min-height: 0; /* Important for flex children to shrink */
-            /* border-top: 1px solid #e0e0e0; */ /* Optional: if config panel is directly above */
             background-color: #ffffff; /* Graph background */
         }
 
-        /* Basic styling for vis.js config elements to blend better */
-        div.vis-configuration-wrapper {
-            padding: 0; /* Remove default padding if vis.js adds it */
+        .filter-panel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background-color: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+            flex-shrink: 0;
         }
-        div.vis-configuration-wrapper table {
-            width: 100%;
-        }
-        div.vis-configuration-wrapper table tr td:first-child {
-            width: 30%; /* Adjust label width */
+        .filter-panel label {
             font-size: 13px;
+            font-weight: 500;
+            color: #495057;
         }
-        div.vis-configuration-wrapper input[type=text],
-        div.vis-configuration-wrapper select {
-            width: 95%;
-            padding: 6px;
-            margin: 2px 0;
-            border: 1px solid #ccc;
+        .filter-panel input[type=text] {
+            flex-grow: 1;
+            padding: 6px 8px;
+            border: 1px solid #ced4da;
             border-radius: 4px;
-            box-sizing: border-box;
             font-size: 13px;
         }
-        div.vis-configuration-wrapper input[type=range] {
-            width: 60%; /* Adjust slider width */
+        .filter-panel button {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+            border: 1px solid #6c757d;
+            background-color: #6c757d;
+            color: white;
+            cursor: pointer;
         }
-        div.vis-configuration-wrapper .vis-label {
-             font-size: 13px;
-             color: #333;
+        .filter-panel button:hover {
+            background-color: #5a6268;
         }
+
+        .info-panel {
+            padding: 8px 15px;
+            background-color: #f8f9fa;
+            font-size: 13px;
+            color: #495057;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+            flex-shrink: 0;
+        }
+
+        /* Basic styling for vis.js config elements to blend better */
+        div.vis-configuration-wrapper { padding: 0; }
+        div.vis-configuration-wrapper table { width: 100%; }
+        div.vis-configuration-wrapper table tr td:first-child { width: 30%; font-size: 13px; }
+        div.vis-configuration-wrapper input[type=text],
+        div.vis-configuration-wrapper select { width: 95%; padding: 6px; margin: 2px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
+        div.vis-configuration-wrapper input[type=range] { width: 60%; }
+        div.vis-configuration-wrapper .vis-label { font-size: 13px; color: #333; }
 
     </style>
 </head>
 <body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-574513c8">
-        <div class="config-panel-header" id="config-panel-header-574513c8" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-574513c8">
+    <div class="config-panel-wrapper" id="config-panel-wrapper-91afbe64">
+        <div class="config-panel-header" id="config-panel-header-91afbe64" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-91afbe64">
             <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-574513c8" aria-label="Toggle configuration panel"></button>
+            <button class="config-toggle-btn" id="config-toggle-btn-91afbe64" aria-label="Toggle configuration panel"></button>
         </div>
-        <div id="config-container-content-574513c8">
+        <div id="config-container-content-91afbe64">
             <!-- Vis.js configuration UI will be injected here -->
         </div>
     </div>
 
-    <div id="mynetwork-574513c8"></div>
+    <div class="filter-panel">
+        <label for="search-input-91afbe64">Filter nodes (regex):</label>
+        <input type="text" id="search-input-91afbe64" placeholder="e.g., ^IMP_ or ELEC$">
+        <button id="clear-btn-91afbe64">Clear</button>
+    </div>
+
+    <div class="info-panel">
+        <strong>Tip:</strong> Click a node to isolate it and its neighbors. Click the background to reset the view.
+    </div>
+
+    <div id="mynetwork-91afbe64"></div>
 
     <script type="text/javascript">
         (function() {
-            var nodesArray = [{"id": "0", "label": "N1", "title": "Tooltip for Node N1", "group": 0, "color": "skyblue", "size": 25}, {"id": "1", "label": "N2", "title": "Tooltip for Node N2", "group": 1}, {"id": "2", "label": "N3", "title": "Tooltip for Node N3", "group": 0}, {"id": "3", "label": "N4", "title": "Tooltip for Node N4", "group": 1}, {"id": "4", "label": "N5", "title": "Tooltip for Node N5", "group": 0}];
-            var edgesArray = [{"from": "0", "to": "1", "label": "Link 0-1", "color": "green", "width": 3}, {"from": "0", "to": "4"}, {"from": "1", "to": "2"}, {"from": "2", "to": "3"}, {"from": "3", "to": "4"}];
-            var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 14, "color": "#333"}, "borderWidth": 2}, "edges": {"width": 2, "smooth": {"type": "dynamic", "roundness": 0.5, "enabled": true}, "arrows": {"to": {"enabled": false, "scaleFactor": 1}}}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -8000, "springConstant": 0.04, "springLength": 150, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1000, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": true, "keyboard": true}, "layout": {"randomSeed": 12345, "improvedLayout": true}, "groups": {"0": {"shape": "dot", "color": {"background": "lightcoral", "border": "red"}}, "1": {"shape": "square", "color": {"background": "lightgreen", "border": "green"}}}};
+            // These arrays are the master dataset
+            var allNodesArray = [{"id": "0", "label": "N1", "title": "Tooltip for Node N1", "group": 0, "color": "skyblue", "size": 25}, {"id": "1", "label": "N2", "title": "Tooltip for Node N2", "group": 1}, {"id": "2", "label": "N3", "title": "Tooltip for Node N3", "group": 0}, {"id": "3", "label": "N4", "title": "Tooltip for Node N4", "group": 1}, {"id": "4", "label": "N5", "title": "Tooltip for Node N5", "group": 0}];
+            var allEdgesArray = [{"from": "0", "to": "1", "label": "Link 0-1", "color": "green", "width": 3}, {"from": "0", "to": "4"}, {"from": "1", "to": "2"}, {"from": "2", "to": "3"}, {"from": "3", "to": "4"}];
+            var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 14, "color": "#333"}, "borderWidth": 2}, "edges": {"width": 2, "smooth": {"type": "dynamic", "roundness": 0.5, "enabled": true}, "arrows": {"to": {"enabled": false, "scaleFactor": 1}}}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -8000, "springConstant": 0.04, "springLength": 150, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1000, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": true, "keyboard": {"enabled": true, "bindToWindow": false}}, "layout": {"randomSeed": 12345, "improvedLayout": true}, "groups": {"0": {"shape": "dot", "color": {"background": "lightcoral", "border": "red"}}, "1": {"shape": "square", "color": {"background": "lightgreen", "border": "green"}}}};
 
-            var configWrapper = document.getElementById('config-panel-wrapper-574513c8');
-            var configHeader = document.getElementById('config-panel-header-574513c8');
-            var configContent = document.getElementById('config-container-content-574513c8');
-            var toggleButton = document.getElementById('config-toggle-btn-574513c8'); // Also target button for ARIA
+            // Get DOM elements
+            var configWrapper = document.getElementById('config-panel-wrapper-91afbe64');
+            var configHeader = document.getElementById('config-panel-header-91afbe64');
+            var configContent = document.getElementById('config-container-content-91afbe64');
+            var toggleButton = document.getElementById('config-toggle-btn-91afbe64');
+            var searchInput = document.getElementById('search-input-91afbe64');
+            var clearButton = document.getElementById('clear-btn-91afbe64');
 
+            // Handle config panel toggle
             if (optionsObject.configure && optionsObject.configure.enabled) {
-                if (!optionsObject.configure.container) { // Only set if user hasn't provided one
+                if (!optionsObject.configure.container) {
                     optionsObject.configure.container = configContent;
                 }
-                // optionsObject.configure.showButton = false; // User should set this in Python options
-
                 configHeader.addEventListener('click', function() {
                     configWrapper.classList.toggle('collapsed');
                     var isExpanded = !configWrapper.classList.contains('collapsed');
                     configHeader.setAttribute('aria-expanded', isExpanded);
-                    toggleButton.setAttribute('aria-expanded', isExpanded); // Keep button ARIA in sync
+                    toggleButton.setAttribute('aria-expanded', isExpanded);
                 });
                 configHeader.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter' || event.key === ' ') {
@@ -163,27 +198,111 @@
                         event.preventDefault();
                     }
                 });
-
-                // Optional: Start collapsed by default
-                // configWrapper.classList.add('collapsed');
-                // configHeader.setAttribute('aria-expanded', 'false');
-                // toggleButton.setAttribute('aria-expanded', 'false');
-
             } else {
-                // If configure is not enabled, hide the whole panel wrapper
-                if (configWrapper) {
-                    configWrapper.style.display = 'none';
-                }
+                if (configWrapper) { configWrapper.style.display = 'none'; }
             }
 
-            var nodes = new vis.DataSet(nodesArray);
-            var edges = new vis.DataSet(edgesArray);
-            var graphContainer = document.getElementById('mynetwork-574513c8');
+            // These DataSets are the "active" data being displayed
+            var nodes = new vis.DataSet(allNodesArray);
+            var edges = new vis.DataSet(allEdgesArray);
+            var graphContainer = document.getElementById('mynetwork-91afbe64');
             var data = { nodes: nodes, edges: edges };
             var network = new vis.Network(graphContainer, data, optionsObject);
 
+            // Function to restore the full graph view
+            function resetView() {
+                searchInput.value = ""; // Clear search input
+                nodes.clear();
+                edges.clear();
+                nodes.add(allNodesArray);
+                edges.add(allEdgesArray);
+                network.fit();
+            }
+
+            // Function to filter graph based on search query
+            function filterBySearch(query) {
+                if (!query) {
+                    resetView();
+                    return;
+                }
+                var regex;
+                try {
+                    regex = new RegExp(query, 'i'); // Case-insensitive regex
+                } catch (e) {
+                    console.error("Invalid Regex:", e);
+                    return; // Don't filter if regex is invalid
+                }
+
+                var matchingNodeIds = new Set();
+                allNodesArray.forEach(function(node) {
+                    var textToSearch = node.label || node.id;
+                    if (regex.test(textToSearch)) {
+                        matchingNodeIds.add(node.id);
+                    }
+                });
+
+                var filteredNodes = allNodesArray.filter(function(node) {
+                    return matchingNodeIds.has(node.id);
+                });
+
+                var filteredEdges = allEdgesArray.filter(function(edge) {
+                    return matchingNodeIds.has(edge.from) && matchingNodeIds.has(edge.to);
+                });
+
+                nodes.clear();
+                edges.clear();
+                nodes.add(filteredNodes);
+                edges.add(filteredEdges);
+                network.fit();
+            }
+
+            // Function to isolate a node and its neighbors
+            function showNeighborhood(nodeId) {
+                searchInput.value = ""; // Clear search when isolating
+                var nodesToShow = new Set([nodeId]);
+                var edgesToShow = [];
+
+                allEdgesArray.forEach(function(edge) {
+                    if (edge.from === nodeId) {
+                        nodesToShow.add(edge.to);
+                        edgesToShow.push(edge);
+                    } else if (edge.to === nodeId) {
+                        nodesToShow.add(edge.from);
+                        edgesToShow.push(edge);
+                    }
+                });
+
+                var filteredNodes = allNodesArray.filter(function(node) {
+                    return nodesToShow.has(node.id);
+                });
+
+                nodes.clear();
+                edges.clear();
+                nodes.add(filteredNodes);
+                edges.add(edgesToShow);
+                network.fit();
+            }
+
+            // --- Event Listeners ---
+
+            // Filter as user types in the search box
+            searchInput.addEventListener('input', function() {
+                filterBySearch(this.value);
+            });
+
+            // Clear button resets the view
+            clearButton.addEventListener('click', resetView);
+
+            // Handle clicks on the network
             network.on("click", function (params) {
-                console.log('Click event:', params);
+                if (params.nodes.length > 0) {
+                    // A node was clicked, show its neighborhood
+                    var clickedNodeId = params.nodes[0];
+                    showNeighborhood(clickedNodeId);
+                } else {
+                    // The background was clicked, reset everything
+                    resetView();
+                }
             });
         })();
     </script>

@@ -1,15 +1,15 @@
-# src/nx_vis_visualizer/core.py
-
 import json
 import logging
 import os
 import uuid
 import webbrowser
 from html import escape
+from pathlib import Path  # Import Path
 from typing import Any, TypeVar, cast
 
 import networkx as nx
 
+# Using a hardcoded name for clear identification in logs
 logger = logging.getLogger("nx_vis_visualizer")
 
 # Runtime compatible TypeVar for NetworkX graphs
@@ -32,202 +32,26 @@ except ImportError:
     iPythonHtmlClassGlobal = None
 
 
-HTML_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{html_page_title}</title>
-    <script type="text/javascript" src="{cdn_js_url}"></script>
-    <link href="{cdn_css_url}" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        body, html {{
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            background-color: #f4f6f8; /* Light background for the page */
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* Prevent body scrollbars */
-        }}
+def _load_template() -> str:
+    """Loads the HTML template from the adjacent file."""
+    try:
+        # Get the path to the template file relative to this script
+        template_path = Path(__file__).parent / "template.html"
+        with open(template_path, encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        logger.error(
+            "Could not find template.html. It should be in the same directory as core.py."
+        )
+        return "<html><body>Template file not found.</body></html>"
 
-        .config-panel-wrapper {{
-            width: 100%;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            z-index: 10; /* Ensure it's above the graph if any overlap issues */
-            flex-shrink: 0; /* Prevent panel from shrinking */
-        }}
 
-        .config-panel-header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            border-bottom: 1px solid #e0e0e0;
-            cursor: pointer;
-            background-color: #f9f9f9;
-        }}
+# Load the template once when the module is imported
+HTML_TEMPLATE = _load_template()
 
-        .config-panel-header h3 {{
-            margin: 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-        }}
-
-        .config-toggle-btn {{
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 5px;
-            color: #555;
-        }}
-        .config-toggle-btn::after {{
-            content: '\\25BC'; /* Down arrow ▼ */
-            display: inline-block;
-            transition: transform 0.2s ease-in-out;
-        }}
-        .collapsed .config-toggle-btn::after {{
-            transform: rotate(-90deg); /* Right arrow for collapsed state */
-        }}
-
-        #config-container-content-{div_id_suffix} {{
-            max-height: 40vh; /* Default expanded max height */
-            overflow-y: auto;
-            padding: 15px;
-            box-sizing: border-box;
-            background-color: #ffffff;
-            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
-        }}
-
-        .collapsed #config-container-content-{div_id_suffix} {{
-            max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            overflow: hidden;
-            border-bottom: none; /* Hide border when collapsed */
-        }}
-
-        #mynetwork-{div_id_suffix} {{
-            width: 100%;
-            flex-grow: 1; /* Graph takes remaining vertical space */
-            min-height: 0; /* Important for flex children to shrink */
-            /* border-top: 1px solid #e0e0e0; */ /* Optional: if config panel is directly above */
-            background-color: #ffffff; /* Graph background */
-        }}
-
-        /* Basic styling for vis.js config elements to blend better */
-        div.vis-configuration-wrapper {{
-            padding: 0; /* Remove default padding if vis.js adds it */
-        }}
-        div.vis-configuration-wrapper table {{
-            width: 100%;
-        }}
-        div.vis-configuration-wrapper table tr td:first-child {{
-            width: 30%; /* Adjust label width */
-            font-size: 13px;
-        }}
-        div.vis-configuration-wrapper input[type=text],
-        div.vis-configuration-wrapper select {{
-            width: 95%;
-            padding: 6px;
-            margin: 2px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 13px;
-        }}
-        div.vis-configuration-wrapper input[type=range] {{
-            width: 60%; /* Adjust slider width */
-        }}
-        div.vis-configuration-wrapper .vis-label {{
-             font-size: 13px;
-             color: #333;
-        }}
-
-    </style>
-</head>
-<body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-{div_id_suffix}">
-        <div class="config-panel-header" id="config-panel-header-{div_id_suffix}" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-{div_id_suffix}">
-            <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-{div_id_suffix}" aria-label="Toggle configuration panel"></button>
-        </div>
-        <div id="config-container-content-{div_id_suffix}">
-            <!-- Vis.js configuration UI will be injected here -->
-        </div>
-    </div>
-
-    <div id="mynetwork-{div_id_suffix}"></div>
-
-    <script type="text/javascript">
-        (function() {{
-            var nodesArray = {nodes_json_str};
-            var edgesArray = {edges_json_str};
-            var optionsObject = {options_json_str};
-
-            var configWrapper = document.getElementById('config-panel-wrapper-{div_id_suffix}');
-            var configHeader = document.getElementById('config-panel-header-{div_id_suffix}');
-            var configContent = document.getElementById('config-container-content-{div_id_suffix}');
-            var toggleButton = document.getElementById('config-toggle-btn-{div_id_suffix}'); // Also target button for ARIA
-
-            if (optionsObject.configure && optionsObject.configure.enabled) {{
-                if (!optionsObject.configure.container) {{ // Only set if user hasn't provided one
-                    optionsObject.configure.container = configContent;
-                }}
-                // optionsObject.configure.showButton = false; // User should set this in Python options
-
-                configHeader.addEventListener('click', function() {{
-                    configWrapper.classList.toggle('collapsed');
-                    var isExpanded = !configWrapper.classList.contains('collapsed');
-                    configHeader.setAttribute('aria-expanded', isExpanded);
-                    toggleButton.setAttribute('aria-expanded', isExpanded); // Keep button ARIA in sync
-                }});
-                configHeader.addEventListener('keydown', function(event) {{
-                    if (event.key === 'Enter' || event.key === ' ') {{
-                        configWrapper.classList.toggle('collapsed');
-                        var isExpanded = !configWrapper.classList.contains('collapsed');
-                        configHeader.setAttribute('aria-expanded', isExpanded);
-                        toggleButton.setAttribute('aria-expanded', isExpanded);
-                        event.preventDefault();
-                    }}
-                }});
-
-                // Optional: Start collapsed by default
-                // configWrapper.classList.add('collapsed');
-                // configHeader.setAttribute('aria-expanded', 'false');
-                // toggleButton.setAttribute('aria-expanded', 'false');
-
-            }} else {{
-                // If configure is not enabled, hide the whole panel wrapper
-                if (configWrapper) {{
-                    configWrapper.style.display = 'none';
-                }}
-            }}
-
-            var nodes = new vis.DataSet(nodesArray);
-            var edges = new vis.DataSet(edgesArray);
-            var graphContainer = document.getElementById('mynetwork-{div_id_suffix}');
-            var data = {{ nodes: nodes, edges: edges }};
-            var network = new vis.Network(graphContainer, data, optionsObject);
-
-            network.on("click", function (params) {{
-                console.log('Click event:', params);
-            }});
-        }})();
-    </script>
-</body>
-</html>
-"""
 
 DEFAULT_VIS_OPTIONS = {
     "autoResize": True,
-    # height and width will be set by parameters or default to 100% in template
     "nodes": {
         "shape": "dot",
         "size": 16,
@@ -257,15 +81,14 @@ DEFAULT_VIS_OPTIONS = {
         "dragView": True,
         "zoomView": True,
         "tooltipDelay": 200,
-        "navigationButtons": False,  # Often better to control via custom UI
-        "keyboard": True,
+        "navigationButtons": False,
+        # CHANGE: Configure keyboard to not bind globally
+        "keyboard": {
+            "enabled": True,
+            "bindToWindow": False,
+        },
     },
     "layout": {"randomSeed": None, "improvedLayout": True},
-    # Example of how to define groups (can be overridden by node attributes)
-    # "groups": {
-    #     "myGroup1": {"color": {"background": "red"}, "shape": "star"},
-    #     "myGroup2": {"color": {"background": "blue"}, "borderWidth": 3}
-    # }
 }
 
 
@@ -310,10 +133,10 @@ def nx_to_vis(
     override_node_properties: dict[str, Any] | None = None,
     override_edge_properties: dict[str, Any] | None = None,
     graph_width: str = "100%",
-    graph_height: str = "95vh",  # Default height for the graph container within the page
+    graph_height: str = "95vh",
     cdn_js: str = "https://unpkg.com/vis-network/standalone/umd/vis-network.min.js",
     cdn_css: str = "https://unpkg.com/vis-network/styles/vis-network.min.css",
-    verbosity: int = 0,  # 0: silent (only errors/warnings), 1: info, 2: debug
+    verbosity: int = 0,
 ) -> str | IPythonHTMLInstance | None:
     """
     Converts a NetworkX graph to an interactive HTML file using vis.js.
@@ -376,9 +199,6 @@ def nx_to_vis(
             "from": node_ids_map[u_obj],
             "to": node_ids_map[v_obj],
         }
-        # If it's a MultiGraph or MultiDiGraph, vis.js needs unique edge IDs
-        # if they are to be manipulated individually by ID later.
-        # We can generate one if not provided.
         if "id" not in attrs and nx_graph.is_multigraph():
             edge_entry["id"] = str(uuid.uuid4())
 
@@ -399,13 +219,11 @@ def nx_to_vis(
             edge_entry.update(override_edge_properties)
         edges_data.append(edge_entry)
 
-    # Start with a deep copy of default options to avoid modifying the global default
     current_options: dict[str, Any] = json.loads(
         json.dumps(DEFAULT_VIS_OPTIONS)
     )
 
     if isinstance(nx_graph, nx.DiGraph):
-        # Ensure 'to' exists before trying to set 'enabled'
         current_options.setdefault("edges", {}).setdefault(
             "arrows", {}
         ).setdefault("to", {})["enabled"] = True
@@ -415,13 +233,10 @@ def nx_to_vis(
     if vis_options:
         if verbosity >= 2:
             logger.debug(f"Merging user vis_options: {vis_options}")
-        _deep_merge_dicts(
-            vis_options, current_options
-        )  # User options override defaults
+        _deep_merge_dicts(vis_options, current_options)
         if verbosity >= 2:
             logger.debug(f"Options after user merge: {current_options}")
 
-    # Handle hierarchical layout implications for physics
     hierarchical_options = current_options.get("layout", {}).get("hierarchical")
     hierarchical_enabled = False
     if isinstance(hierarchical_options, dict):
@@ -462,8 +277,8 @@ def nx_to_vis(
         edges_json_str=edges_json_str,
         options_json_str=options_json_str,
         div_id_suffix=div_id_suffix,
-        width=graph_width,  # These are for the #mynetwork div style if needed by template
-        height=graph_height,  # (currently template uses flex-grow)
+        width=graph_width,
+        height=graph_height,
         cdn_js_url=cdn_js,
         cdn_css_url=cdn_css,
     )

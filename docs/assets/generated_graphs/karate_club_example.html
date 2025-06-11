@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,7 +61,7 @@
             transform: rotate(-90deg); /* Right arrow for collapsed state */
         }
 
-        #config-container-content-fdedba83 {
+        #config-container-content-ae7dcaf0 {
             max-height: 40vh; /* Default expanded max height */
             overflow-y: auto;
             padding: 15px;
@@ -71,7 +70,7 @@
             transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
         }
 
-        .collapsed #config-container-content-fdedba83 {
+        .collapsed #config-container-content-ae7dcaf0 {
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
@@ -79,80 +78,116 @@
             border-bottom: none; /* Hide border when collapsed */
         }
 
-        #mynetwork-fdedba83 {
+        #mynetwork-ae7dcaf0 {
             width: 100%;
             flex-grow: 1; /* Graph takes remaining vertical space */
             min-height: 0; /* Important for flex children to shrink */
-            /* border-top: 1px solid #e0e0e0; */ /* Optional: if config panel is directly above */
             background-color: #ffffff; /* Graph background */
         }
 
-        /* Basic styling for vis.js config elements to blend better */
-        div.vis-configuration-wrapper {
-            padding: 0; /* Remove default padding if vis.js adds it */
+        .filter-panel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background-color: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+            flex-shrink: 0;
         }
-        div.vis-configuration-wrapper table {
-            width: 100%;
-        }
-        div.vis-configuration-wrapper table tr td:first-child {
-            width: 30%; /* Adjust label width */
+        .filter-panel label {
             font-size: 13px;
+            font-weight: 500;
+            color: #495057;
         }
-        div.vis-configuration-wrapper input[type=text],
-        div.vis-configuration-wrapper select {
-            width: 95%;
-            padding: 6px;
-            margin: 2px 0;
-            border: 1px solid #ccc;
+        .filter-panel input[type=text] {
+            flex-grow: 1;
+            padding: 6px 8px;
+            border: 1px solid #ced4da;
             border-radius: 4px;
-            box-sizing: border-box;
             font-size: 13px;
         }
-        div.vis-configuration-wrapper input[type=range] {
-            width: 60%; /* Adjust slider width */
+        .filter-panel button {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+            border: 1px solid #6c757d;
+            background-color: #6c757d;
+            color: white;
+            cursor: pointer;
         }
-        div.vis-configuration-wrapper .vis-label {
-             font-size: 13px;
-             color: #333;
+        .filter-panel button:hover {
+            background-color: #5a6268;
         }
+
+        .info-panel {
+            padding: 8px 15px;
+            background-color: #f8f9fa;
+            font-size: 13px;
+            color: #495057;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+            flex-shrink: 0;
+        }
+
+        /* Basic styling for vis.js config elements to blend better */
+        div.vis-configuration-wrapper { padding: 0; }
+        div.vis-configuration-wrapper table { width: 100%; }
+        div.vis-configuration-wrapper table tr td:first-child { width: 30%; font-size: 13px; }
+        div.vis-configuration-wrapper input[type=text],
+        div.vis-configuration-wrapper select { width: 95%; padding: 6px; margin: 2px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
+        div.vis-configuration-wrapper input[type=range] { width: 60%; }
+        div.vis-configuration-wrapper .vis-label { font-size: 13px; color: #333; }
 
     </style>
 </head>
 <body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-fdedba83">
-        <div class="config-panel-header" id="config-panel-header-fdedba83" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-fdedba83">
+    <div class="config-panel-wrapper" id="config-panel-wrapper-ae7dcaf0">
+        <div class="config-panel-header" id="config-panel-header-ae7dcaf0" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-ae7dcaf0">
             <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-fdedba83" aria-label="Toggle configuration panel"></button>
+            <button class="config-toggle-btn" id="config-toggle-btn-ae7dcaf0" aria-label="Toggle configuration panel"></button>
         </div>
-        <div id="config-container-content-fdedba83">
+        <div id="config-container-content-ae7dcaf0">
             <!-- Vis.js configuration UI will be injected here -->
         </div>
     </div>
 
-    <div id="mynetwork-fdedba83"></div>
+    <div class="filter-panel">
+        <label for="search-input-ae7dcaf0">Filter nodes (regex):</label>
+        <input type="text" id="search-input-ae7dcaf0" placeholder="e.g., ^IMP_ or ELEC$">
+        <button id="clear-btn-ae7dcaf0">Clear</button>
+    </div>
+
+    <div class="info-panel">
+        <strong>Tip:</strong> Click a node to isolate it and its neighbors. Click the background to reset the view.
+    </div>
+
+    <div id="mynetwork-ae7dcaf0"></div>
 
     <script type="text/javascript">
         (function() {
-            var nodesArray = [{"id": "0", "club": "Mr. Hi", "label": "0", "title": "Member 0\nClub: Mr. Hi", "group": "Mr. Hi", "value": 16}, {"id": "1", "club": "Mr. Hi", "label": "1", "title": "Member 1\nClub: Mr. Hi", "group": "Mr. Hi", "value": 9}, {"id": "2", "club": "Mr. Hi", "label": "2", "title": "Member 2\nClub: Mr. Hi", "group": "Mr. Hi", "value": 10}, {"id": "3", "club": "Mr. Hi", "label": "3", "title": "Member 3\nClub: Mr. Hi", "group": "Mr. Hi", "value": 6}, {"id": "4", "club": "Mr. Hi", "label": "4", "title": "Member 4\nClub: Mr. Hi", "group": "Mr. Hi", "value": 3}, {"id": "5", "club": "Mr. Hi", "label": "5", "title": "Member 5\nClub: Mr. Hi", "group": "Mr. Hi", "value": 4}, {"id": "6", "club": "Mr. Hi", "label": "6", "title": "Member 6\nClub: Mr. Hi", "group": "Mr. Hi", "value": 4}, {"id": "7", "club": "Mr. Hi", "label": "7", "title": "Member 7\nClub: Mr. Hi", "group": "Mr. Hi", "value": 4}, {"id": "8", "club": "Mr. Hi", "label": "8", "title": "Member 8\nClub: Mr. Hi", "group": "Mr. Hi", "value": 5}, {"id": "9", "club": "Officer", "label": "9", "title": "Member 9\nClub: Officer", "group": "Officer", "value": 2}, {"id": "10", "club": "Mr. Hi", "label": "10", "title": "Member 10\nClub: Mr. Hi", "group": "Mr. Hi", "value": 3}, {"id": "11", "club": "Mr. Hi", "label": "11", "title": "Member 11\nClub: Mr. Hi", "group": "Mr. Hi", "value": 1}, {"id": "12", "club": "Mr. Hi", "label": "12", "title": "Member 12\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "13", "club": "Mr. Hi", "label": "13", "title": "Member 13\nClub: Mr. Hi", "group": "Mr. Hi", "value": 5}, {"id": "14", "club": "Officer", "label": "14", "title": "Member 14\nClub: Officer", "group": "Officer", "value": 2}, {"id": "15", "club": "Officer", "label": "15", "title": "Member 15\nClub: Officer", "group": "Officer", "value": 2}, {"id": "16", "club": "Mr. Hi", "label": "16", "title": "Member 16\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "17", "club": "Mr. Hi", "label": "17", "title": "Member 17\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "18", "club": "Officer", "label": "18", "title": "Member 18\nClub: Officer", "group": "Officer", "value": 2}, {"id": "19", "club": "Mr. Hi", "label": "19", "title": "Member 19\nClub: Mr. Hi", "group": "Mr. Hi", "value": 3}, {"id": "20", "club": "Officer", "label": "20", "title": "Member 20\nClub: Officer", "group": "Officer", "value": 2}, {"id": "21", "club": "Mr. Hi", "label": "21", "title": "Member 21\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "22", "club": "Officer", "label": "22", "title": "Member 22\nClub: Officer", "group": "Officer", "value": 2}, {"id": "23", "club": "Officer", "label": "23", "title": "Member 23\nClub: Officer", "group": "Officer", "value": 5}, {"id": "24", "club": "Officer", "label": "24", "title": "Member 24\nClub: Officer", "group": "Officer", "value": 3}, {"id": "25", "club": "Officer", "label": "25", "title": "Member 25\nClub: Officer", "group": "Officer", "value": 3}, {"id": "26", "club": "Officer", "label": "26", "title": "Member 26\nClub: Officer", "group": "Officer", "value": 2}, {"id": "27", "club": "Officer", "label": "27", "title": "Member 27\nClub: Officer", "group": "Officer", "value": 4}, {"id": "28", "club": "Officer", "label": "28", "title": "Member 28\nClub: Officer", "group": "Officer", "value": 3}, {"id": "29", "club": "Officer", "label": "29", "title": "Member 29\nClub: Officer", "group": "Officer", "value": 4}, {"id": "30", "club": "Officer", "label": "30", "title": "Member 30\nClub: Officer", "group": "Officer", "value": 4}, {"id": "31", "club": "Officer", "label": "31", "title": "Member 31\nClub: Officer", "group": "Officer", "value": 6}, {"id": "32", "club": "Officer", "label": "32", "title": "Member 32\nClub: Officer", "group": "Officer", "value": 12}, {"id": "33", "club": "Officer", "label": "33", "title": "Member 33\nClub: Officer", "group": "Officer", "value": 17}];
-            var edgesArray = [{"from": "0", "to": "1", "weight": 4}, {"from": "0", "to": "2", "weight": 5}, {"from": "0", "to": "3", "weight": 3}, {"from": "0", "to": "4", "weight": 3}, {"from": "0", "to": "5", "weight": 3}, {"from": "0", "to": "6", "weight": 3}, {"from": "0", "to": "7", "weight": 2}, {"from": "0", "to": "8", "weight": 2}, {"from": "0", "to": "10", "weight": 2}, {"from": "0", "to": "11", "weight": 3}, {"from": "0", "to": "12", "weight": 1}, {"from": "0", "to": "13", "weight": 3}, {"from": "0", "to": "17", "weight": 2}, {"from": "0", "to": "19", "weight": 2}, {"from": "0", "to": "21", "weight": 2}, {"from": "0", "to": "31", "weight": 2}, {"from": "1", "to": "2", "weight": 6}, {"from": "1", "to": "3", "weight": 3}, {"from": "1", "to": "7", "weight": 4}, {"from": "1", "to": "13", "weight": 5}, {"from": "1", "to": "17", "weight": 1}, {"from": "1", "to": "19", "weight": 2}, {"from": "1", "to": "21", "weight": 2}, {"from": "1", "to": "30", "weight": 2}, {"from": "2", "to": "3", "weight": 3}, {"from": "2", "to": "7", "weight": 4}, {"from": "2", "to": "8", "weight": 5}, {"from": "2", "to": "9", "weight": 1}, {"from": "2", "to": "13", "weight": 3}, {"from": "2", "to": "27", "weight": 2}, {"from": "2", "to": "28", "weight": 2}, {"from": "2", "to": "32", "weight": 2}, {"from": "3", "to": "7", "weight": 3}, {"from": "3", "to": "12", "weight": 3}, {"from": "3", "to": "13", "weight": 3}, {"from": "4", "to": "6", "weight": 2}, {"from": "4", "to": "10", "weight": 3}, {"from": "5", "to": "6", "weight": 5}, {"from": "5", "to": "10", "weight": 3}, {"from": "5", "to": "16", "weight": 3}, {"from": "6", "to": "16", "weight": 3}, {"from": "8", "to": "30", "weight": 3}, {"from": "8", "to": "32", "weight": 3}, {"from": "8", "to": "33", "weight": 4}, {"from": "9", "to": "33", "weight": 2}, {"from": "13", "to": "33", "weight": 3}, {"from": "14", "to": "32", "weight": 3}, {"from": "14", "to": "33", "weight": 2}, {"from": "15", "to": "32", "weight": 3}, {"from": "15", "to": "33", "weight": 4}, {"from": "18", "to": "32", "weight": 1}, {"from": "18", "to": "33", "weight": 2}, {"from": "19", "to": "33", "weight": 1}, {"from": "20", "to": "32", "weight": 3}, {"from": "20", "to": "33", "weight": 1}, {"from": "22", "to": "32", "weight": 2}, {"from": "22", "to": "33", "weight": 3}, {"from": "23", "to": "25", "weight": 5}, {"from": "23", "to": "27", "weight": 4}, {"from": "23", "to": "29", "weight": 3}, {"from": "23", "to": "32", "weight": 5}, {"from": "23", "to": "33", "weight": 4}, {"from": "24", "to": "25", "weight": 2}, {"from": "24", "to": "27", "weight": 3}, {"from": "24", "to": "31", "weight": 2}, {"from": "25", "to": "31", "weight": 7}, {"from": "26", "to": "29", "weight": 4}, {"from": "26", "to": "33", "weight": 2}, {"from": "27", "to": "33", "weight": 4}, {"from": "28", "to": "31", "weight": 2}, {"from": "28", "to": "33", "weight": 2}, {"from": "29", "to": "32", "weight": 4}, {"from": "29", "to": "33", "weight": 2}, {"from": "30", "to": "32", "weight": 3}, {"from": "30", "to": "33", "weight": 3}, {"from": "31", "to": "32", "weight": 4}, {"from": "31", "to": "33", "weight": 4}, {"from": "32", "to": "33", "weight": 5}];
-            var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 12, "color": "#333"}, "borderWidth": 2, "scaling": {"min": 10, "max": 30, "label": {"enabled": false}}}, "edges": {"width": 0.5, "smooth": false, "arrows": {"to": {"enabled": false, "scaleFactor": 1}}, "color": "silver"}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -10000, "springConstant": 0.04, "springLength": 120, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1200, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": false, "keyboard": true}, "layout": {"randomSeed": 42, "improvedLayout": true}, "groups": {"Mr. Hi": {"color": {"background": "orange", "border": "darkorange"}, "shape": "dot"}, "Officer": {"color": {"background": "purple", "border": "indigo"}, "shape": "ellipse"}}};
+            // These arrays are the master dataset
+            var allNodesArray = [{"id": "0", "club": "Mr. Hi", "label": "0", "title": "Member 0\nClub: Mr. Hi", "group": "Mr. Hi", "value": 16}, {"id": "1", "club": "Mr. Hi", "label": "1", "title": "Member 1\nClub: Mr. Hi", "group": "Mr. Hi", "value": 9}, {"id": "2", "club": "Mr. Hi", "label": "2", "title": "Member 2\nClub: Mr. Hi", "group": "Mr. Hi", "value": 10}, {"id": "3", "club": "Mr. Hi", "label": "3", "title": "Member 3\nClub: Mr. Hi", "group": "Mr. Hi", "value": 6}, {"id": "4", "club": "Mr. Hi", "label": "4", "title": "Member 4\nClub: Mr. Hi", "group": "Mr. Hi", "value": 3}, {"id": "5", "club": "Mr. Hi", "label": "5", "title": "Member 5\nClub: Mr. Hi", "group": "Mr. Hi", "value": 4}, {"id": "6", "club": "Mr. Hi", "label": "6", "title": "Member 6\nClub: Mr. Hi", "group": "Mr. Hi", "value": 4}, {"id": "7", "club": "Mr. Hi", "label": "7", "title": "Member 7\nClub: Mr. Hi", "group": "Mr. Hi", "value": 4}, {"id": "8", "club": "Mr. Hi", "label": "8", "title": "Member 8\nClub: Mr. Hi", "group": "Mr. Hi", "value": 5}, {"id": "9", "club": "Officer", "label": "9", "title": "Member 9\nClub: Officer", "group": "Officer", "value": 2}, {"id": "10", "club": "Mr. Hi", "label": "10", "title": "Member 10\nClub: Mr. Hi", "group": "Mr. Hi", "value": 3}, {"id": "11", "club": "Mr. Hi", "label": "11", "title": "Member 11\nClub: Mr. Hi", "group": "Mr. Hi", "value": 1}, {"id": "12", "club": "Mr. Hi", "label": "12", "title": "Member 12\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "13", "club": "Mr. Hi", "label": "13", "title": "Member 13\nClub: Mr. Hi", "group": "Mr. Hi", "value": 5}, {"id": "14", "club": "Officer", "label": "14", "title": "Member 14\nClub: Officer", "group": "Officer", "value": 2}, {"id": "15", "club": "Officer", "label": "15", "title": "Member 15\nClub: Officer", "group": "Officer", "value": 2}, {"id": "16", "club": "Mr. Hi", "label": "16", "title": "Member 16\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "17", "club": "Mr. Hi", "label": "17", "title": "Member 17\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "18", "club": "Officer", "label": "18", "title": "Member 18\nClub: Officer", "group": "Officer", "value": 2}, {"id": "19", "club": "Mr. Hi", "label": "19", "title": "Member 19\nClub: Mr. Hi", "group": "Mr. Hi", "value": 3}, {"id": "20", "club": "Officer", "label": "20", "title": "Member 20\nClub: Officer", "group": "Officer", "value": 2}, {"id": "21", "club": "Mr. Hi", "label": "21", "title": "Member 21\nClub: Mr. Hi", "group": "Mr. Hi", "value": 2}, {"id": "22", "club": "Officer", "label": "22", "title": "Member 22\nClub: Officer", "group": "Officer", "value": 2}, {"id": "23", "club": "Officer", "label": "23", "title": "Member 23\nClub: Officer", "group": "Officer", "value": 5}, {"id": "24", "club": "Officer", "label": "24", "title": "Member 24\nClub: Officer", "group": "Officer", "value": 3}, {"id": "25", "club": "Officer", "label": "25", "title": "Member 25\nClub: Officer", "group": "Officer", "value": 3}, {"id": "26", "club": "Officer", "label": "26", "title": "Member 26\nClub: Officer", "group": "Officer", "value": 2}, {"id": "27", "club": "Officer", "label": "27", "title": "Member 27\nClub: Officer", "group": "Officer", "value": 4}, {"id": "28", "club": "Officer", "label": "28", "title": "Member 28\nClub: Officer", "group": "Officer", "value": 3}, {"id": "29", "club": "Officer", "label": "29", "title": "Member 29\nClub: Officer", "group": "Officer", "value": 4}, {"id": "30", "club": "Officer", "label": "30", "title": "Member 30\nClub: Officer", "group": "Officer", "value": 4}, {"id": "31", "club": "Officer", "label": "31", "title": "Member 31\nClub: Officer", "group": "Officer", "value": 6}, {"id": "32", "club": "Officer", "label": "32", "title": "Member 32\nClub: Officer", "group": "Officer", "value": 12}, {"id": "33", "club": "Officer", "label": "33", "title": "Member 33\nClub: Officer", "group": "Officer", "value": 17}];
+            var allEdgesArray = [{"from": "0", "to": "1", "weight": 4}, {"from": "0", "to": "2", "weight": 5}, {"from": "0", "to": "3", "weight": 3}, {"from": "0", "to": "4", "weight": 3}, {"from": "0", "to": "5", "weight": 3}, {"from": "0", "to": "6", "weight": 3}, {"from": "0", "to": "7", "weight": 2}, {"from": "0", "to": "8", "weight": 2}, {"from": "0", "to": "10", "weight": 2}, {"from": "0", "to": "11", "weight": 3}, {"from": "0", "to": "12", "weight": 1}, {"from": "0", "to": "13", "weight": 3}, {"from": "0", "to": "17", "weight": 2}, {"from": "0", "to": "19", "weight": 2}, {"from": "0", "to": "21", "weight": 2}, {"from": "0", "to": "31", "weight": 2}, {"from": "1", "to": "2", "weight": 6}, {"from": "1", "to": "3", "weight": 3}, {"from": "1", "to": "7", "weight": 4}, {"from": "1", "to": "13", "weight": 5}, {"from": "1", "to": "17", "weight": 1}, {"from": "1", "to": "19", "weight": 2}, {"from": "1", "to": "21", "weight": 2}, {"from": "1", "to": "30", "weight": 2}, {"from": "2", "to": "3", "weight": 3}, {"from": "2", "to": "7", "weight": 4}, {"from": "2", "to": "8", "weight": 5}, {"from": "2", "to": "9", "weight": 1}, {"from": "2", "to": "13", "weight": 3}, {"from": "2", "to": "27", "weight": 2}, {"from": "2", "to": "28", "weight": 2}, {"from": "2", "to": "32", "weight": 2}, {"from": "3", "to": "7", "weight": 3}, {"from": "3", "to": "12", "weight": 3}, {"from": "3", "to": "13", "weight": 3}, {"from": "4", "to": "6", "weight": 2}, {"from": "4", "to": "10", "weight": 3}, {"from": "5", "to": "6", "weight": 5}, {"from": "5", "to": "10", "weight": 3}, {"from": "5", "to": "16", "weight": 3}, {"from": "6", "to": "16", "weight": 3}, {"from": "8", "to": "30", "weight": 3}, {"from": "8", "to": "32", "weight": 3}, {"from": "8", "to": "33", "weight": 4}, {"from": "9", "to": "33", "weight": 2}, {"from": "13", "to": "33", "weight": 3}, {"from": "14", "to": "32", "weight": 3}, {"from": "14", "to": "33", "weight": 2}, {"from": "15", "to": "32", "weight": 3}, {"from": "15", "to": "33", "weight": 4}, {"from": "18", "to": "32", "weight": 1}, {"from": "18", "to": "33", "weight": 2}, {"from": "19", "to": "33", "weight": 1}, {"from": "20", "to": "32", "weight": 3}, {"from": "20", "to": "33", "weight": 1}, {"from": "22", "to": "32", "weight": 2}, {"from": "22", "to": "33", "weight": 3}, {"from": "23", "to": "25", "weight": 5}, {"from": "23", "to": "27", "weight": 4}, {"from": "23", "to": "29", "weight": 3}, {"from": "23", "to": "32", "weight": 5}, {"from": "23", "to": "33", "weight": 4}, {"from": "24", "to": "25", "weight": 2}, {"from": "24", "to": "27", "weight": 3}, {"from": "24", "to": "31", "weight": 2}, {"from": "25", "to": "31", "weight": 7}, {"from": "26", "to": "29", "weight": 4}, {"from": "26", "to": "33", "weight": 2}, {"from": "27", "to": "33", "weight": 4}, {"from": "28", "to": "31", "weight": 2}, {"from": "28", "to": "33", "weight": 2}, {"from": "29", "to": "32", "weight": 4}, {"from": "29", "to": "33", "weight": 2}, {"from": "30", "to": "32", "weight": 3}, {"from": "30", "to": "33", "weight": 3}, {"from": "31", "to": "32", "weight": 4}, {"from": "31", "to": "33", "weight": 4}, {"from": "32", "to": "33", "weight": 5}];
+            var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 12, "color": "#333"}, "borderWidth": 2, "scaling": {"min": 10, "max": 30, "label": {"enabled": false}}}, "edges": {"width": 0.5, "smooth": false, "arrows": {"to": {"enabled": false, "scaleFactor": 1}}, "color": "silver"}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -10000, "springConstant": 0.04, "springLength": 120, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1200, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": false, "keyboard": {"enabled": true, "bindToWindow": false}}, "layout": {"randomSeed": 42, "improvedLayout": true}, "groups": {"Mr. Hi": {"color": {"background": "orange", "border": "darkorange"}, "shape": "dot"}, "Officer": {"color": {"background": "purple", "border": "indigo"}, "shape": "ellipse"}}};
 
-            var configWrapper = document.getElementById('config-panel-wrapper-fdedba83');
-            var configHeader = document.getElementById('config-panel-header-fdedba83');
-            var configContent = document.getElementById('config-container-content-fdedba83');
-            var toggleButton = document.getElementById('config-toggle-btn-fdedba83'); // Also target button for ARIA
+            // Get DOM elements
+            var configWrapper = document.getElementById('config-panel-wrapper-ae7dcaf0');
+            var configHeader = document.getElementById('config-panel-header-ae7dcaf0');
+            var configContent = document.getElementById('config-container-content-ae7dcaf0');
+            var toggleButton = document.getElementById('config-toggle-btn-ae7dcaf0');
+            var searchInput = document.getElementById('search-input-ae7dcaf0');
+            var clearButton = document.getElementById('clear-btn-ae7dcaf0');
 
+            // Handle config panel toggle
             if (optionsObject.configure && optionsObject.configure.enabled) {
-                if (!optionsObject.configure.container) { // Only set if user hasn't provided one
+                if (!optionsObject.configure.container) {
                     optionsObject.configure.container = configContent;
                 }
-                // optionsObject.configure.showButton = false; // User should set this in Python options
-
                 configHeader.addEventListener('click', function() {
                     configWrapper.classList.toggle('collapsed');
                     var isExpanded = !configWrapper.classList.contains('collapsed');
                     configHeader.setAttribute('aria-expanded', isExpanded);
-                    toggleButton.setAttribute('aria-expanded', isExpanded); // Keep button ARIA in sync
+                    toggleButton.setAttribute('aria-expanded', isExpanded);
                 });
                 configHeader.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter' || event.key === ' ') {
@@ -163,27 +198,111 @@
                         event.preventDefault();
                     }
                 });
-
-                // Optional: Start collapsed by default
-                // configWrapper.classList.add('collapsed');
-                // configHeader.setAttribute('aria-expanded', 'false');
-                // toggleButton.setAttribute('aria-expanded', 'false');
-
             } else {
-                // If configure is not enabled, hide the whole panel wrapper
-                if (configWrapper) {
-                    configWrapper.style.display = 'none';
-                }
+                if (configWrapper) { configWrapper.style.display = 'none'; }
             }
 
-            var nodes = new vis.DataSet(nodesArray);
-            var edges = new vis.DataSet(edgesArray);
-            var graphContainer = document.getElementById('mynetwork-fdedba83');
+            // These DataSets are the "active" data being displayed
+            var nodes = new vis.DataSet(allNodesArray);
+            var edges = new vis.DataSet(allEdgesArray);
+            var graphContainer = document.getElementById('mynetwork-ae7dcaf0');
             var data = { nodes: nodes, edges: edges };
             var network = new vis.Network(graphContainer, data, optionsObject);
 
+            // Function to restore the full graph view
+            function resetView() {
+                searchInput.value = ""; // Clear search input
+                nodes.clear();
+                edges.clear();
+                nodes.add(allNodesArray);
+                edges.add(allEdgesArray);
+                network.fit();
+            }
+
+            // Function to filter graph based on search query
+            function filterBySearch(query) {
+                if (!query) {
+                    resetView();
+                    return;
+                }
+                var regex;
+                try {
+                    regex = new RegExp(query, 'i'); // Case-insensitive regex
+                } catch (e) {
+                    console.error("Invalid Regex:", e);
+                    return; // Don't filter if regex is invalid
+                }
+
+                var matchingNodeIds = new Set();
+                allNodesArray.forEach(function(node) {
+                    var textToSearch = node.label || node.id;
+                    if (regex.test(textToSearch)) {
+                        matchingNodeIds.add(node.id);
+                    }
+                });
+
+                var filteredNodes = allNodesArray.filter(function(node) {
+                    return matchingNodeIds.has(node.id);
+                });
+
+                var filteredEdges = allEdgesArray.filter(function(edge) {
+                    return matchingNodeIds.has(edge.from) && matchingNodeIds.has(edge.to);
+                });
+
+                nodes.clear();
+                edges.clear();
+                nodes.add(filteredNodes);
+                edges.add(filteredEdges);
+                network.fit();
+            }
+
+            // Function to isolate a node and its neighbors
+            function showNeighborhood(nodeId) {
+                searchInput.value = ""; // Clear search when isolating
+                var nodesToShow = new Set([nodeId]);
+                var edgesToShow = [];
+
+                allEdgesArray.forEach(function(edge) {
+                    if (edge.from === nodeId) {
+                        nodesToShow.add(edge.to);
+                        edgesToShow.push(edge);
+                    } else if (edge.to === nodeId) {
+                        nodesToShow.add(edge.from);
+                        edgesToShow.push(edge);
+                    }
+                });
+
+                var filteredNodes = allNodesArray.filter(function(node) {
+                    return nodesToShow.has(node.id);
+                });
+
+                nodes.clear();
+                edges.clear();
+                nodes.add(filteredNodes);
+                edges.add(edgesToShow);
+                network.fit();
+            }
+
+            // --- Event Listeners ---
+
+            // Filter as user types in the search box
+            searchInput.addEventListener('input', function() {
+                filterBySearch(this.value);
+            });
+
+            // Clear button resets the view
+            clearButton.addEventListener('click', resetView);
+
+            // Handle clicks on the network
             network.on("click", function (params) {
-                console.log('Click event:', params);
+                if (params.nodes.length > 0) {
+                    // A node was clicked, show its neighborhood
+                    var clickedNodeId = params.nodes[0];
+                    showNeighborhood(clickedNodeId);
+                } else {
+                    // The background was clicked, reset everything
+                    resetView();
+                }
             });
         })();
     </script>
