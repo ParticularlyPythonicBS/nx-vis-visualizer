@@ -83,7 +83,7 @@ The extensive `vis_options` used for this graph (defined as `custom_vis_options`
     "groups": { /* ... group definitions ... */ },
     "interaction": {
         "navigationButtons": True,
-        "keyboard": {"enabled": True}
+        "keyboard": {"enabled": False}
     },
     "physics": {
         "enabled": True,

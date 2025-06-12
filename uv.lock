@@ -511,8 +511,8 @@ wheels = [
 
 [[package]]
 name = "nx-vis-visualizer"
-version = "0.1.2"
-source = { virtual = "." }
+version = "0.2.0"
+source = { editable = "." }
 dependencies = [
     { name = "networkx" },
 ]
@@ -541,7 +541,7 @@ requires-dist = [
     { name = "mkdocs-material", marker = "extra == 'docs'", specifier = ">=9.6.14" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.16.0" },
     { name = "networkx", specifier = ">=3.5" },
-    { name = "nx-vis-visualizer", marker = "extra == 'dev'", virtual = "." },
+    { name = "nx-vis-visualizer", marker = "extra == 'dev'", editable = "." },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=4.2.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.1.1" },

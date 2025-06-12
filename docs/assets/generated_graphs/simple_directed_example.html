@@ -61,7 +61,7 @@
             transform: rotate(-90deg); /* Right arrow for collapsed state */
         }
 
-        #config-container-content-41ca6b89 {
+        #config-container-content-770005e8 {
             max-height: 40vh; /* Default expanded max height */
             overflow-y: auto;
             padding: 15px;
@@ -70,7 +70,7 @@
             transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
         }
 
-        .collapsed #config-container-content-41ca6b89 {
+        .collapsed #config-container-content-770005e8 {
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
@@ -78,7 +78,7 @@
             border-bottom: none; /* Hide border when collapsed */
         }
 
-        #mynetwork-41ca6b89 {
+        #mynetwork-770005e8 {
             width: 100%;
             flex-grow: 1; /* Graph takes remaining vertical space */
             min-height: 0; /* Important for flex children to shrink */
@@ -141,27 +141,27 @@
     </style>
 </head>
 <body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-41ca6b89">
-        <div class="config-panel-header" id="config-panel-header-41ca6b89" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-41ca6b89">
+    <div class="config-panel-wrapper" id="config-panel-wrapper-770005e8">
+        <div class="config-panel-header" id="config-panel-header-770005e8" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-770005e8">
             <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-41ca6b89" aria-label="Toggle configuration panel"></button>
+            <button class="config-toggle-btn" id="config-toggle-btn-770005e8" aria-label="Toggle configuration panel"></button>
         </div>
-        <div id="config-container-content-41ca6b89">
+        <div id="config-container-content-770005e8">
             <!-- Vis.js configuration UI will be injected here -->
         </div>
     </div>
 
     <div class="filter-panel">
-        <label for="search-input-41ca6b89">Filter nodes (regex):</label>
-        <input type="text" id="search-input-41ca6b89" placeholder="e.g., ^IMP_ or ELEC$">
-        <button id="clear-btn-41ca6b89">Clear</button>
+        <label for="search-input-770005e8">Filter nodes (regex):</label>
+        <input type="text" id="search-input-770005e8" placeholder="e.g., ^IMP_ or ELEC$">
+        <button id="clear-btn-770005e8">Clear</button>
     </div>
 
     <div class="info-panel">
         <strong>Tip:</strong> Click a node to isolate it and its neighbors. Click the background to reset the view.
     </div>
 
-    <div id="mynetwork-41ca6b89"></div>
+    <div id="mynetwork-770005e8"></div>
 
     <script type="text/javascript">
         (function() {
@@ -171,12 +171,12 @@
             var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 14, "color": "#333"}, "borderWidth": 2}, "edges": {"width": 2, "smooth": {"type": "curvedCW", "roundness": 0.2, "enabled": true}, "arrows": {"to": {"enabled": true, "scaleFactor": 1, "type": "arrow"}}, "font": {"align": "middle", "size": 10}}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -8000, "springConstant": 0.04, "springLength": 150, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1000, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": true, "keyboard": {"enabled": true, "bindToWindow": false}}, "layout": {"randomSeed": 789, "improvedLayout": true, "hierarchical": false}};
 
             // Get DOM elements
-            var configWrapper = document.getElementById('config-panel-wrapper-41ca6b89');
-            var configHeader = document.getElementById('config-panel-header-41ca6b89');
-            var configContent = document.getElementById('config-container-content-41ca6b89');
-            var toggleButton = document.getElementById('config-toggle-btn-41ca6b89');
-            var searchInput = document.getElementById('search-input-41ca6b89');
-            var clearButton = document.getElementById('clear-btn-41ca6b89');
+            var configWrapper = document.getElementById('config-panel-wrapper-770005e8');
+            var configHeader = document.getElementById('config-panel-header-770005e8');
+            var configContent = document.getElementById('config-container-content-770005e8');
+            var toggleButton = document.getElementById('config-toggle-btn-770005e8');
+            var searchInput = document.getElementById('search-input-770005e8');
+            var clearButton = document.getElementById('clear-btn-770005e8');
 
             // Handle config panel toggle
             if (optionsObject.configure && optionsObject.configure.enabled) {
@@ -205,7 +205,7 @@
             // These DataSets are the "active" data being displayed
             var nodes = new vis.DataSet(allNodesArray);
             var edges = new vis.DataSet(allEdgesArray);
-            var graphContainer = document.getElementById('mynetwork-41ca6b89');
+            var graphContainer = document.getElementById('mynetwork-770005e8');
             var data = { nodes: nodes, edges: edges };
             var network = new vis.Network(graphContainer, data, optionsObject);
 

@@ -209,7 +209,7 @@ custom_vis_options: dict[str, Any] = {
         "navigationButtons": True,
         "tooltipDelay": 200,
         "keyboard": {
-            "enabled": True,
+            "enabled": False,
             "speed": {"x": 10, "y": 10, "zoom": 0.05},
             "bindToWindow": True,
         },
