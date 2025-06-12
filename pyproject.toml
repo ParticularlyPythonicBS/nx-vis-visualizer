@@ -1,10 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "nx-vis-visualizer"
-version = "0.1.2"
+version = "0.2.0"
 description = "A Python wrapper for rendering NetworkX graphs interactively using vis.js."
 readme = "README.md"
 requires-python = ">=3.12"
-license = {text = "MIT"}
+license = "MIT"
 
 keywords = ["networkx", "vis.js", "graph", "visualization", "interactive"]
 
@@ -12,9 +16,10 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    # The "License :: ..." classifier is no longer needed with the above key.
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Visualization",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -42,6 +47,13 @@ dev = [
 notebook = [
     "ipython>=9.3.0",
 ]
+
+[tool.setuptools]
+packages = {find = {where = ["src"]}}
+
+[tool.setuptools.package-data]
+"nx_vis_visualizer" = ["*.html", "*.css"]
+
 
 [tool.ruff]
 line-length = 80

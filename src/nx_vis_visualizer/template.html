@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Directed Graph</title>
-    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <title>{html_page_title}</title>
+    <script type="text/javascript" src="{cdn_js_url}"></script>
+    <link href="{cdn_css_url}" rel="stylesheet" type="text/css" />
     <style type="text/css">
-        body, html {
+        body, html {{
             margin: 0;
             padding: 0;
             width: 100%;
@@ -17,17 +17,17 @@
             display: flex;
             flex-direction: column;
             overflow: hidden; /* Prevent body scrollbars */
-        }
+        }}
 
-        .config-panel-wrapper {
+        .config-panel-wrapper {{
             width: 100%;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             z-index: 10; /* Ensure it's above the graph if any overlap issues */
             flex-shrink: 0; /* Prevent panel from shrinking */
-        }
+        }}
 
-        .config-panel-header {
+        .config-panel-header {{
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -35,57 +35,57 @@
             border-bottom: 1px solid #e0e0e0;
             cursor: pointer;
             background-color: #f9f9f9;
-        }
+        }}
 
-        .config-panel-header h3 {
+        .config-panel-header h3 {{
             margin: 0;
             font-size: 16px;
             font-weight: 600;
             color: #333;
-        }
+        }}
 
-        .config-toggle-btn {
+        .config-toggle-btn {{
             background: none;
             border: none;
             font-size: 18px;
             cursor: pointer;
             padding: 5px;
             color: #555;
-        }
-        .config-toggle-btn::after {
+        }}
+        .config-toggle-btn::after {{
             content: '\25BC'; /* Down arrow ▼ */
             display: inline-block;
             transition: transform 0.2s ease-in-out;
-        }
-        .collapsed .config-toggle-btn::after {
+        }}
+        .collapsed .config-toggle-btn::after {{
             transform: rotate(-90deg); /* Right arrow for collapsed state */
-        }
+        }}
 
-        #config-container-content-770005e8 {
+        #config-container-content-{div_id_suffix} {{
             max-height: 40vh; /* Default expanded max height */
             overflow-y: auto;
             padding: 15px;
             box-sizing: border-box;
             background-color: #ffffff;
             transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
-        }
+        }}
 
-        .collapsed #config-container-content-770005e8 {
+        .collapsed #config-container-content-{div_id_suffix} {{
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
             overflow: hidden;
             border-bottom: none; /* Hide border when collapsed */
-        }
+        }}
 
-        #mynetwork-770005e8 {
+        #mynetwork-{div_id_suffix} {{
             width: 100%;
             flex-grow: 1; /* Graph takes remaining vertical space */
             min-height: 0; /* Important for flex children to shrink */
             background-color: #ffffff; /* Graph background */
-        }
+        }}
 
-        .filter-panel {
+        .filter-panel {{
             display: flex;
             align-items: center;
             gap: 10px;
@@ -93,20 +93,20 @@
             background-color: #e9ecef;
             border-bottom: 1px solid #dee2e6;
             flex-shrink: 0;
-        }
-        .filter-panel label {
+        }}
+        .filter-panel label {{
             font-size: 13px;
             font-weight: 500;
             color: #495057;
-        }
-        .filter-panel input[type=text] {
+        }}
+        .filter-panel input[type=text] {{
             flex-grow: 1;
             padding: 6px 8px;
             border: 1px solid #ced4da;
             border-radius: 4px;
             font-size: 13px;
-        }
-        .filter-panel button {
+        }}
+        .filter-panel button {{
             padding: 6px 12px;
             font-size: 13px;
             border-radius: 4px;
@@ -114,12 +114,12 @@
             background-color: #6c757d;
             color: white;
             cursor: pointer;
-        }
-        .filter-panel button:hover {
+        }}
+        .filter-panel button:hover {{
             background-color: #5a6268;
-        }
+        }}
 
-        .info-panel {
+        .info-panel {{
             padding: 8px 15px;
             background-color: #f8f9fa;
             font-size: 13px;
@@ -127,184 +127,184 @@
             text-align: center;
             border-bottom: 1px solid #dee2e6;
             flex-shrink: 0;
-        }
+        }}
 
         /* Basic styling for vis.js config elements to blend better */
-        div.vis-configuration-wrapper { padding: 0; }
-        div.vis-configuration-wrapper table { width: 100%; }
-        div.vis-configuration-wrapper table tr td:first-child { width: 30%; font-size: 13px; }
+        div.vis-configuration-wrapper {{ padding: 0; }}
+        div.vis-configuration-wrapper table {{ width: 100%; }}
+        div.vis-configuration-wrapper table tr td:first-child {{ width: 30%; font-size: 13px; }}
         div.vis-configuration-wrapper input[type=text],
-        div.vis-configuration-wrapper select { width: 95%; padding: 6px; margin: 2px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
-        div.vis-configuration-wrapper input[type=range] { width: 60%; }
-        div.vis-configuration-wrapper .vis-label { font-size: 13px; color: #333; }
+        div.vis-configuration-wrapper select {{ width: 95%; padding: 6px; margin: 2px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }}
+        div.vis-configuration-wrapper input[type=range] {{ width: 60%; }}
+        div.vis-configuration-wrapper .vis-label {{ font-size: 13px; color: #333; }}
 
     </style>
 </head>
 <body>
-    <div class="config-panel-wrapper" id="config-panel-wrapper-770005e8">
-        <div class="config-panel-header" id="config-panel-header-770005e8" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-770005e8">
+    <div class="config-panel-wrapper" id="config-panel-wrapper-{div_id_suffix}">
+        <div class="config-panel-header" id="config-panel-header-{div_id_suffix}" role="button" tabindex="0" aria-expanded="true" aria-controls="config-container-content-{div_id_suffix}">
             <h3>Configuration</h3>
-            <button class="config-toggle-btn" id="config-toggle-btn-770005e8" aria-label="Toggle configuration panel"></button>
+            <button class="config-toggle-btn" id="config-toggle-btn-{div_id_suffix}" aria-label="Toggle configuration panel"></button>
         </div>
-        <div id="config-container-content-770005e8">
+        <div id="config-container-content-{div_id_suffix}">
             <!-- Vis.js configuration UI will be injected here -->
         </div>
     </div>
 
     <div class="filter-panel">
-        <label for="search-input-770005e8">Filter nodes (regex):</label>
-        <input type="text" id="search-input-770005e8" placeholder="e.g., ^IMP_ or ELEC$">
-        <button id="clear-btn-770005e8">Clear</button>
+        <label for="search-input-{div_id_suffix}">Filter nodes (regex):</label>
+        <input type="text" id="search-input-{div_id_suffix}" placeholder="e.g., ^IMP_ or ELEC$">
+        <button id="clear-btn-{div_id_suffix}">Clear</button>
     </div>
 
     <div class="info-panel">
         <strong>Tip:</strong> Click a node to isolate it and its neighbors. Click the background to reset the view.
     </div>
 
-    <div id="mynetwork-770005e8"></div>
+    <div id="mynetwork-{div_id_suffix}"></div>
 
     <script type="text/javascript">
-        (function() {
+        (function() {{
             // These arrays are the master dataset
-            var allNodesArray = [{"id": "1", "label": "DNode 1", "title": "This is directed node 1", "color": "lightcoral", "shape": "star"}, {"id": "2", "label": "DNode 2", "title": "This is directed node 2"}, {"id": "3", "label": "DNode 3", "title": "This is directed node 3"}, {"id": "4", "label": "DNode 4", "title": "This is directed node 4", "color": "lightgreen"}];
-            var allEdgesArray = [{"from": "1", "to": "2", "label": "Rel A"}, {"from": "1", "to": "3", "label": "Rel B"}, {"from": "2", "to": "4", "label": "Rel C"}, {"from": "3", "to": "4", "label": "Rel D"}, {"from": "4", "to": "1", "label": "Rel E (Cycle)"}];
-            var optionsObject = {"autoResize": true, "nodes": {"shape": "dot", "size": 16, "font": {"size": 14, "color": "#333"}, "borderWidth": 2}, "edges": {"width": 2, "smooth": {"type": "curvedCW", "roundness": 0.2, "enabled": true}, "arrows": {"to": {"enabled": true, "scaleFactor": 1, "type": "arrow"}}, "font": {"align": "middle", "size": 10}}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -8000, "springConstant": 0.04, "springLength": 150, "damping": 0.09, "avoidOverlap": 0.1}, "solver": "barnesHut", "stabilization": {"iterations": 1000, "fit": true}}, "interaction": {"hover": true, "dragNodes": true, "dragView": true, "zoomView": true, "tooltipDelay": 200, "navigationButtons": true, "keyboard": {"enabled": true, "bindToWindow": false}}, "layout": {"randomSeed": 789, "improvedLayout": true, "hierarchical": false}};
+            var allNodesArray = {nodes_json_str};
+            var allEdgesArray = {edges_json_str};
+            var optionsObject = {options_json_str};
 
             // Get DOM elements
-            var configWrapper = document.getElementById('config-panel-wrapper-770005e8');
-            var configHeader = document.getElementById('config-panel-header-770005e8');
-            var configContent = document.getElementById('config-container-content-770005e8');
-            var toggleButton = document.getElementById('config-toggle-btn-770005e8');
-            var searchInput = document.getElementById('search-input-770005e8');
-            var clearButton = document.getElementById('clear-btn-770005e8');
+            var configWrapper = document.getElementById('config-panel-wrapper-{div_id_suffix}');
+            var configHeader = document.getElementById('config-panel-header-{div_id_suffix}');
+            var configContent = document.getElementById('config-container-content-{div_id_suffix}');
+            var toggleButton = document.getElementById('config-toggle-btn-{div_id_suffix}');
+            var searchInput = document.getElementById('search-input-{div_id_suffix}');
+            var clearButton = document.getElementById('clear-btn-{div_id_suffix}');
 
             // Handle config panel toggle
-            if (optionsObject.configure && optionsObject.configure.enabled) {
-                if (!optionsObject.configure.container) {
+            if (optionsObject.configure && optionsObject.configure.enabled) {{
+                if (!optionsObject.configure.container) {{
                     optionsObject.configure.container = configContent;
-                }
-                configHeader.addEventListener('click', function() {
+                }}
+                configHeader.addEventListener('click', function() {{
                     configWrapper.classList.toggle('collapsed');
                     var isExpanded = !configWrapper.classList.contains('collapsed');
                     configHeader.setAttribute('aria-expanded', isExpanded);
                     toggleButton.setAttribute('aria-expanded', isExpanded);
-                });
-                configHeader.addEventListener('keydown', function(event) {
-                    if (event.key === 'Enter' || event.key === ' ') {
+                }});
+                configHeader.addEventListener('keydown', function(event) {{
+                    if (event.key === 'Enter' || event.key === ' ') {{
                         configWrapper.classList.toggle('collapsed');
                         var isExpanded = !configWrapper.classList.contains('collapsed');
                         configHeader.setAttribute('aria-expanded', isExpanded);
                         toggleButton.setAttribute('aria-expanded', isExpanded);
                         event.preventDefault();
-                    }
-                });
-            } else {
-                if (configWrapper) { configWrapper.style.display = 'none'; }
-            }
+                    }}
+                }});
+            }} else {{
+                if (configWrapper) {{ configWrapper.style.display = 'none'; }}
+            }}
 
             // These DataSets are the "active" data being displayed
             var nodes = new vis.DataSet(allNodesArray);
             var edges = new vis.DataSet(allEdgesArray);
-            var graphContainer = document.getElementById('mynetwork-770005e8');
-            var data = { nodes: nodes, edges: edges };
+            var graphContainer = document.getElementById('mynetwork-{div_id_suffix}');
+            var data = {{ nodes: nodes, edges: edges }};
             var network = new vis.Network(graphContainer, data, optionsObject);
 
             // Function to restore the full graph view
-            function resetView() {
+            function resetView() {{
                 searchInput.value = ""; // Clear search input
                 nodes.clear();
                 edges.clear();
                 nodes.add(allNodesArray);
                 edges.add(allEdgesArray);
                 network.fit();
-            }
+            }}
 
             // Function to filter graph based on search query
-            function filterBySearch(query) {
-                if (!query) {
+            function filterBySearch(query) {{
+                if (!query) {{
                     resetView();
                     return;
-                }
+                }}
                 var regex;
-                try {
+                try {{
                     regex = new RegExp(query, 'i'); // Case-insensitive regex
-                } catch (e) {
+                }} catch (e) {{
                     console.error("Invalid Regex:", e);
                     return; // Don't filter if regex is invalid
-                }
+                }}
 
                 var matchingNodeIds = new Set();
-                allNodesArray.forEach(function(node) {
+                allNodesArray.forEach(function(node) {{
                     var textToSearch = node.label || node.id;
-                    if (regex.test(textToSearch)) {
+                    if (regex.test(textToSearch)) {{
                         matchingNodeIds.add(node.id);
-                    }
-                });
+                    }}
+                }});
 
-                var filteredNodes = allNodesArray.filter(function(node) {
+                var filteredNodes = allNodesArray.filter(function(node) {{
                     return matchingNodeIds.has(node.id);
-                });
+                }});
 
-                var filteredEdges = allEdgesArray.filter(function(edge) {
+                var filteredEdges = allEdgesArray.filter(function(edge) {{
                     return matchingNodeIds.has(edge.from) && matchingNodeIds.has(edge.to);
-                });
+                }});
 
                 nodes.clear();
                 edges.clear();
                 nodes.add(filteredNodes);
                 edges.add(filteredEdges);
                 network.fit();
-            }
+            }}
 
             // Function to isolate a node and its neighbors
-            function showNeighborhood(nodeId) {
+            function showNeighborhood(nodeId) {{
                 searchInput.value = ""; // Clear search when isolating
                 var nodesToShow = new Set([nodeId]);
                 var edgesToShow = [];
 
-                allEdgesArray.forEach(function(edge) {
-                    if (edge.from === nodeId) {
+                allEdgesArray.forEach(function(edge) {{
+                    if (edge.from === nodeId) {{
                         nodesToShow.add(edge.to);
                         edgesToShow.push(edge);
-                    } else if (edge.to === nodeId) {
+                    }} else if (edge.to === nodeId) {{
                         nodesToShow.add(edge.from);
                         edgesToShow.push(edge);
-                    }
-                });
+                    }}
+                }});
 
-                var filteredNodes = allNodesArray.filter(function(node) {
+                var filteredNodes = allNodesArray.filter(function(node) {{
                     return nodesToShow.has(node.id);
-                });
+                }});
 
                 nodes.clear();
                 edges.clear();
                 nodes.add(filteredNodes);
                 edges.add(edgesToShow);
                 network.fit();
-            }
+            }}
 
             // --- Event Listeners ---
 
             // Filter as user types in the search box
-            searchInput.addEventListener('input', function() {
+            searchInput.addEventListener('input', function() {{
                 filterBySearch(this.value);
-            });
+            }});
 
             // Clear button resets the view
             clearButton.addEventListener('click', resetView);
 
             // Handle clicks on the network
-            network.on("click", function (params) {
-                if (params.nodes.length > 0) {
+            network.on("click", function (params) {{
+                if (params.nodes.length > 0) {{
                     // A node was clicked, show its neighborhood
                     var clickedNodeId = params.nodes[0];
                     showNeighborhood(clickedNodeId);
-                } else {
+                }} else {{
                     // The background was clicked, reset everything
                     resetView();
-                }
-            });
-        })();
+                }}
+            }});
+        }})();
     </script>
 </body>
 </html>
