@@ -50,12 +50,12 @@ G = nx.cycle_graph(5)
 
 # Add some basic attributes for visualization
 for i, node_id in enumerate(G.nodes()):
-    G.nodes[node_id]['label'] = f'Node {i+1}'
-    G.nodes[node_id]['title'] = f'This is Node {i+1}' # Tooltip
-    G.nodes[node_id]['group'] = i % 2
+    G.nodes[node_id]["label"] = f"Node {i + 1}"
+    G.nodes[node_id]["title"] = f"This is Node {i + 1}"  # Tooltip
+    G.nodes[node_id]["group"] = i % 2
 
-G.edges[0,1]['label'] = 'Link 0-1'
-G.edges[0,1]['color'] = 'red'
+G.edges[0, 1]["label"] = "Link 0-1"
+G.edges[0, 1]["color"] = "red"
 
 # 2. Define (optional) vis.js options
 custom_options = {
@@ -63,10 +63,10 @@ custom_options = {
     "edges": {"smooth": {"enabled": True}},
     "groups": {
         0: {"color": "skyblue", "shape": "dot"},
-        1: {"color": "lightgreen", "shape": "square"}
+        1: {"color": "lightgreen", "shape": "square"},
     },
     "interaction": {"navigationButtons": True, "hover": True},
-    "physics": {"enabled": True}
+    "physics": {"enabled": True},
 }
 
 # 3. Generate and show the interactive HTML graph
@@ -76,7 +76,7 @@ nx_to_vis(
     output_filename="cycle_graph.html",
     html_title="My Interactive Cycle Graph",
     vis_options=custom_options,
-    show_browser=True
+    show_browser=True,
 )
 
 # To get HTML for a Jupyter Notebook:
