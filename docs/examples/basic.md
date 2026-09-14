@@ -23,15 +23,15 @@ import networkx as nx
 
 G = nx.cycle_graph(5)
 for i, node_id in enumerate(G.nodes()):
-    G.nodes[node_id]['label'] = f'N{i+1}'
-    G.nodes[node_id]['title'] = f'Tooltip for Node N{i+1}'
-    G.nodes[node_id]['group'] = i % 2
+    G.nodes[node_id]["label"] = f"N{i + 1}"
+    G.nodes[node_id]["title"] = f"Tooltip for Node N{i + 1}"
+    G.nodes[node_id]["group"] = i % 2
     if i == 0:
-        G.nodes[node_id]['color'] = 'skyblue'
-        G.nodes[node_id]['size'] = 25
-G.edges[0,1]['label'] = "Link 0-1"
-G.edges[0,1]['color'] = "green"
-G.edges[0,1]['width'] = 3
+        G.nodes[node_id]["color"] = "skyblue"
+        G.nodes[node_id]["size"] = 25
+G.edges[0, 1]["label"] = "Link 0-1"
+G.edges[0, 1]["color"] = "green"
+G.edges[0, 1]["width"] = 3
 ```
 
 The `vis_options` used (as a Python dictionary in the generation script):
@@ -72,10 +72,10 @@ import networkx as nx
 
 G = nx.karate_club_graph()
 for node_id, data in G.nodes(data=True):
-    data['label'] = str(node_id)
-    data['title'] = f"Member {node_id}\nClub: {data['club']}"
-    data['group'] = data['club']
-    data['value'] = G.degree(node_id)
+    data["label"] = str(node_id)
+    data["title"] = f"Member {node_id}\nClub: {data['club']}"
+    data["group"] = data["club"]
+    data["value"] = G.degree(node_id)
 ```
 
 The `vis_options` used (as a Python dictionary in the generation script):
