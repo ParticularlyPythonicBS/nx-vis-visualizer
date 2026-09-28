@@ -13,17 +13,17 @@ from nx_vis_visualizer import nx_to_vis
 # 1. Create a NetworkX graph
 G = nx.Graph()
 G.add_edges_from([(1, 2), (2, 3), (3, 1), (3, 4)])
-G.nodes[1]['label'] = 'Node One'
-G.nodes[2]['title'] = 'This is node 2, connected to 1 and 3.' # Tooltip
-G.nodes[3]['color'] = 'red'
-G.edges[2,3]['label'] = 'Link'
+G.nodes[1]["label"] = "Node One"
+G.nodes[2]["title"] = "This is node 2, connected to 1 and 3."  # Tooltip
+G.nodes[3]["color"] = "red"
+G.edges[2, 3]["label"] = "Link"
 
 # 2. Visualize it!
 output_path = nx_to_vis(
     G,
     output_filename="my_first_graph.html",
     html_title="My First Interactive Graph",
-    show_browser=True # Automatically open the generated HTML in your browser
+    show_browser=True,  # Automatically open the generated HTML in your browser
 )
 
 print(f"Graph saved to: {output_path}")
