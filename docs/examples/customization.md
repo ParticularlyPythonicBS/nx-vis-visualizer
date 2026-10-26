@@ -31,6 +31,7 @@ The Python code to generate the graph structure can be found in `examples/advanc
 import networkx as nx
 import random
 
+
 def create_showcase_graph():
     G = nx.Graph(name="Advanced Showcase Graph")
 
@@ -41,15 +42,22 @@ def create_showcase_graph():
         shape="diamond",
         color={"background": "lightgreen", "border": "darkgreen"},
         size=30,
-        fixed={"x": True, "y": True}, x=-400, y=-200,
+        fixed={"x": True, "y": True},
+        x=-400,
+        y=-200,
         # ... other attributes
     )
     # ... more nodes ...
 
     G.add_edge(
-        "Hub", "Sink", weight=5, color="blue", width=4,
-        title="Main link from Hub to Sink", arrows="to",
-        smooth={"type": "curvedCW", "roundness": 0.2}
+        "Hub",
+        "Sink",
+        weight=5,
+        color="blue",
+        width=4,
+        title="Main link from Hub to Sink",
+        arrows="to",
+        smooth={"type": "curvedCW", "roundness": 0.2},
     )
     # ... more edges ...
     return G
