@@ -22,23 +22,25 @@ The Python code to generate the graph data:
 import networkx as nx
 
 DG = nx.DiGraph()
-DG.add_edges_from([
-    (1, 2, {'label': 'Rel A'}),
-    (1, 3, {'label': 'Rel B'}),
-    (2, 4, {'label': 'Rel C'}),
-    (3, 4, {'label': 'Rel D'}),
-    (4, 1, {'label': 'Rel E (Cycle)'}) # Creates a cycle
-])
+DG.add_edges_from(
+    [
+        (1, 2, {"label": "Rel A"}),
+        (1, 3, {"label": "Rel B"}),
+        (2, 4, {"label": "Rel C"}),
+        (3, 4, {"label": "Rel D"}),
+        (4, 1, {"label": "Rel E (Cycle)"}),  # Creates a cycle
+    ]
+)
 
 # Add some node properties
 for i in DG.nodes():
-    DG.nodes[i]['label'] = f'DNode {i}'
-    DG.nodes[i]['title'] = f'This is directed node {i}'
+    DG.nodes[i]["label"] = f"DNode {i}"
+    DG.nodes[i]["title"] = f"This is directed node {i}"
     if i == 1:
-        DG.nodes[i]['color'] = 'lightcoral'
-        DG.nodes[i]['shape'] = 'star'
+        DG.nodes[i]["color"] = "lightcoral"
+        DG.nodes[i]["shape"] = "star"
     if i == 4:
-        DG.nodes[i]['color'] = 'lightgreen'
+        DG.nodes[i]["color"] = "lightgreen"
 ```
 
 The `vis_options` used (as a Python dictionary in the generation script):
@@ -86,25 +88,51 @@ import networkx as nx
 
 DG = nx.DiGraph()
 courses = {
-    "CS101": {"label": "Intro to CS", "level": 1, "title": "Fundamentals of Computer Science"},
-    "CS102": {"label": "Data Structures", "level": 2, "title": "Basic Data Structures and Algorithms"},
-    "MA101": {"label": "Calculus I", "level": 1, "title": "Differential Calculus"},
-    "CS201": {"label": "Algorithms", "level": 3, "title": "Advanced Algorithm Design"},
-    "CS202": {"label": "Operating Systems", "level": 3, "title": "Principles of Operating Systems"},
-    "CS301": {"label": "Compilers", "level": 4, "title": "Compiler Construction"}
+    "CS101": {
+        "label": "Intro to CS",
+        "level": 1,
+        "title": "Fundamentals of Computer Science",
+    },
+    "CS102": {
+        "label": "Data Structures",
+        "level": 2,
+        "title": "Basic Data Structures and Algorithms",
+    },
+    "MA101": {
+        "label": "Calculus I",
+        "level": 1,
+        "title": "Differential Calculus",
+    },
+    "CS201": {
+        "label": "Algorithms",
+        "level": 3,
+        "title": "Advanced Algorithm Design",
+    },
+    "CS202": {
+        "label": "Operating Systems",
+        "level": 3,
+        "title": "Principles of Operating Systems",
+    },
+    "CS301": {
+        "label": "Compilers",
+        "level": 4,
+        "title": "Compiler Construction",
+    },
 }
 for course_id, attrs in courses.items():
     DG.add_node(course_id, **attrs)
 
 # Edges: (prerequisite, course)
-DG.add_edges_from([
-    ("CS101", "CS102"),
-    ("MA101", "CS102"),
-    ("CS102", "CS201"),
-    ("CS102", "CS202"),
-    ("CS201", "CS301"),
-    ("CS202", "CS301")
-])
+DG.add_edges_from(
+    [
+        ("CS101", "CS102"),
+        ("MA101", "CS102"),
+        ("CS102", "CS201"),
+        ("CS102", "CS202"),
+        ("CS201", "CS301"),
+        ("CS202", "CS301"),
+    ]
+)
 ```
 
 The `vis_options` used (as a Python dictionary in the generation script):
